@@ -15,6 +15,14 @@
 		F25BB2A4246ABBFC00CA89FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F25BB2A2246ABBFC00CA89FF /* LaunchScreen.storyboard */; };
 		F25BB2AF246ABBFC00CA89FF /* EchonetScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2AE246ABBFC00CA89FF /* EchonetScannerTests.swift */; };
 		F25BB2BA246ABBFC00CA89FF /* EchonetScannerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2B9246ABBFC00CA89FF /* EchonetScannerUITests.swift */; };
+		F25BB2C9246AC44100CA89FF /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2C8246AC44100CA89FF /* UserData.swift */; };
+		F25BB2CC246ACAAE00CA89FF /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2CB246ACAAE00CA89FF /* Data.swift */; };
+		F25BB2CE246ACB1000CA89FF /* EchonetNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2CD246ACB1000CA89FF /* EchonetNode.swift */; };
+		F25BB2D2246ACCD900CA89FF /* EchonetDefine.json in Resources */ = {isa = PBXBuildFile; fileRef = F25BB2D1246ACCD900CA89FF /* EchonetDefine.json */; };
+		F2C073D4246C37A90087255B /* PropertyRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D3246C37A90087255B /* PropertyRow.swift */; };
+		F2C073D6246CDB210087255B /* PropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D5246CDB210087255B /* PropertyList.swift */; };
+		F2C073D8246D04460087255B /* NodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D7246D04460087255B /* NodeRow.swift */; };
+		F2C073DA246D120A0087255B /* NodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D9246D120A0087255B /* NodeList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +57,14 @@
 		F25BB2B5246ABBFC00CA89FF /* EchonetScannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchonetScannerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F25BB2B9246ABBFC00CA89FF /* EchonetScannerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchonetScannerUITests.swift; sourceTree = "<group>"; };
 		F25BB2BB246ABBFC00CA89FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F25BB2C8246AC44100CA89FF /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		F25BB2CB246ACAAE00CA89FF /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		F25BB2CD246ACB1000CA89FF /* EchonetNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchonetNode.swift; sourceTree = "<group>"; };
+		F25BB2D1246ACCD900CA89FF /* EchonetDefine.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = EchonetDefine.json; sourceTree = "<group>"; };
+		F2C073D3246C37A90087255B /* PropertyRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyRow.swift; sourceTree = "<group>"; };
+		F2C073D5246CDB210087255B /* PropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyList.swift; sourceTree = "<group>"; };
+		F2C073D7246D04460087255B /* NodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeRow.swift; sourceTree = "<group>"; };
+		F2C073D9246D120A0087255B /* NodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +115,8 @@
 		F25BB296246ABBFA00CA89FF /* EchonetScanner */ = {
 			isa = PBXGroup;
 			children = (
+				F25BB2CA246AC9E600CA89FF /* Resources */,
+				F25BB2C7246AC41F00CA89FF /* Models */,
 				F25BB297246ABBFA00CA89FF /* AppDelegate.swift */,
 				F25BB299246ABBFA00CA89FF /* SceneDelegate.swift */,
 				F25BB29B246ABBFA00CA89FF /* ContentView.swift */,
@@ -106,6 +124,10 @@
 				F25BB2A2246ABBFC00CA89FF /* LaunchScreen.storyboard */,
 				F25BB2A5246ABBFC00CA89FF /* Info.plist */,
 				F25BB29F246ABBFC00CA89FF /* Preview Content */,
+				F2C073D3246C37A90087255B /* PropertyRow.swift */,
+				F2C073D5246CDB210087255B /* PropertyList.swift */,
+				F2C073D7246D04460087255B /* NodeRow.swift */,
+				F2C073D9246D120A0087255B /* NodeList.swift */,
 			);
 			path = EchonetScanner;
 			sourceTree = "<group>";
@@ -134,6 +156,24 @@
 				F25BB2BB246ABBFC00CA89FF /* Info.plist */,
 			);
 			path = EchonetScannerUITests;
+			sourceTree = "<group>";
+		};
+		F25BB2C7246AC41F00CA89FF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F25BB2C8246AC44100CA89FF /* UserData.swift */,
+				F25BB2CB246ACAAE00CA89FF /* Data.swift */,
+				F25BB2CD246ACB1000CA89FF /* EchonetNode.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F25BB2CA246AC9E600CA89FF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F25BB2D1246ACCD900CA89FF /* EchonetDefine.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F25BB2A4246ABBFC00CA89FF /* LaunchScreen.storyboard in Resources */,
+				F25BB2D2246ACCD900CA89FF /* EchonetDefine.json in Resources */,
 				F25BB2A1246ABBFC00CA89FF /* Preview Assets.xcassets in Resources */,
 				F25BB29E246ABBFC00CA89FF /* Assets.xcassets in Resources */,
 			);
@@ -268,7 +309,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F25BB298246ABBFA00CA89FF /* AppDelegate.swift in Sources */,
+				F25BB2CC246ACAAE00CA89FF /* Data.swift in Sources */,
+				F2C073D8246D04460087255B /* NodeRow.swift in Sources */,
+				F25BB2CE246ACB1000CA89FF /* EchonetNode.swift in Sources */,
 				F25BB29A246ABBFA00CA89FF /* SceneDelegate.swift in Sources */,
+				F2C073D4246C37A90087255B /* PropertyRow.swift in Sources */,
+				F25BB2C9246AC44100CA89FF /* UserData.swift in Sources */,
+				F2C073DA246D120A0087255B /* NodeList.swift in Sources */,
+				F2C073D6246CDB210087255B /* PropertyList.swift in Sources */,
 				F25BB29C246ABBFA00CA89FF /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
