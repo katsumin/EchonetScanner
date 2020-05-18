@@ -22,19 +22,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
 //        let epc = 0x89
 //        let view = ContentView(property: EchonetNode.Property(epc:epc, gettable: true, settable: false))
-        let props = [
-            EchonetNode.Property( epc: 0x80, gettable: true, settable: true ),
-            EchonetNode.Property( epc: 0x89, gettable: true, settable: false ),
-            EchonetNode.Property( epc: 0x8a, gettable: true, settable: false ),
-            EchonetNode.Property( epc: 0x8b, gettable: false, settable: false ),
-        ]
-        let nodes = [
-            EchonetNode(name: "", deviceType: 0x288, ipAddress: "192.168.1.120", properties: props),
-            EchonetNode(name: "", deviceType: 0x26b, ipAddress: "192.168.1.155", properties: props),
-            EchonetNode(name: "", deviceType: 0x130, ipAddress: "192.168.1.158", properties: props),
-        ]
+//        let props = [
+//            EchonetNode.Property( epc: 0x80, gettable: true, settable: true ),
+//            EchonetNode.Property( epc: 0x89, gettable: true, settable: false ),
+//            EchonetNode.Property( epc: 0x8a, gettable: true, settable: false ),
+//            EchonetNode.Property( epc: 0x8b, gettable: false, settable: false ),
+//        ]
+//        let nodes = [
+//            EchonetNode(name: "", deviceType: 0x288, ipAddress: "192.168.1.120", properties: props),
+//            EchonetNode(name: "", deviceType: 0x26b, ipAddress: "192.168.1.155", properties: props),
+//            EchonetNode(name: "", deviceType: 0x130, ipAddress: "192.168.1.158", properties: props),
+//        ]
 //        let view = PropertyList(properties: props)
-        let view = NodeList(nodes: nodes)
+//        let view = NodeList(nodes: [])
+        let view = NodeList().environmentObject(UserData())
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

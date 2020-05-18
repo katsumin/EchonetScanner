@@ -33,15 +33,21 @@ func load<T: Decodable>(_ filename: String) -> T {
 
 struct EchonetDefine :Decodable {
     var device_types : Dictionary<String, String>
-    var properties: Dictionary<String,Dictionary<String,Dictionary<String,String>>>
+    var properties: Dictionary<String, Dictionary<String, Dictionary<String, String>>>
+    var select_items : Dictionary<String, Dictionary<String, String>>
     
-    static func propertyNameFromEpc(_ epc: Int) -> String {
-        var propName = "unknown"
+    static func propertyNameFromEpc(_ epc: Int, _ deviceType: String) -> String {
+//        var propName = "unknown"
+        if let defineAtDeviceType = echonetDefine.properties[deviceType] {
+            if let dataAtEpc = defineAtDeviceType[epcToString(epc)] {
+                return dataAtEpc["name"]!
+            }
+        }
         if let dataAtEpc = echonetDefine.properties["super"]![epcToString(epc)] {
-            propName = dataAtEpc["name"]!
+            return dataAtEpc["name"]!
 //            print(dataAtEpc)
         }
-        return propName
+        return "unknown"
     }
     
     static func epcToString(_ epc: Int) -> String {

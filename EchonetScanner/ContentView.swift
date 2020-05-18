@@ -27,7 +27,7 @@ struct ContentView: View {
 //            Spacer()
             VStack {
                 HStack {
-                    Text(EchonetDefine.propertyNameFromEpc(property.epc))
+                    Text(EchonetDefine.propertyNameFromEpc(property.epc, property.deviceType))
                         .font(.title)
                         .foregroundColor(.green)
                         .padding(.leading, 5.0)
@@ -46,7 +46,7 @@ struct ContentView: View {
                 Text("EDT")
                     .font(.title)
                     .padding(.leading, 5.0)
-                TextField("デフォルト", text: $edt)
+                TextField(property.value, text: $edt)
 //                    .border(Color.gray)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.title)
@@ -93,8 +93,8 @@ struct ContentView: View {
 
 #if DEBUG
 private let props = [
-    EchonetNode.Property( epc: 0x80, gettable: true, settable: true ),
-    EchonetNode.Property( epc: 0x8a, gettable: true, settable: false ),
+    EchonetNode.Property( epc: 0x80, gettable: true, settable: true, value: "value80", deviceType: "0x0130"),
+    EchonetNode.Property( epc: 0x8a, gettable: true, settable: false, value: "value8a", deviceType: "0x0130"),
 ]
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

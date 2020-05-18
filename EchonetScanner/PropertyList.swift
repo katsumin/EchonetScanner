@@ -33,9 +33,9 @@ struct PropertyList: View {
 
 #if DEBUG
 private let props = [
-    EchonetNode.Property( epc: 0x80, gettable: true, settable: true ),
-    EchonetNode.Property( epc: 0x84, gettable: true, settable: false ),
-    EchonetNode.Property( epc: 0x8a, gettable: true, settable: false ),
+    EchonetNode.Property( epc: 0x80, gettable: true, settable: true, value: "v80", deviceType: "0x0130"),
+    EchonetNode.Property( epc: 0x84, gettable: true, settable: false, value: "v80", deviceType: "0x0130"),
+    EchonetNode.Property( epc: 0xb0, gettable: true, settable: false, value: "v80", deviceType: "0x0130"),
 ]
 struct PropertyList_Previews: PreviewProvider {
     static var previews: some View {
