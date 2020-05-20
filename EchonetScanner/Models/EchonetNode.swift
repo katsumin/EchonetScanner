@@ -10,7 +10,7 @@
 //import CoreLocation
 import Foundation
 
-var echonetNodeDatas:[EchonetNode] = []
+var echonetNodeDatas: [String:[String:EchonetNode]] = [:]
 
 struct EchonetNode: Hashable, Codable, Identifiable {
     var id: [UInt8]
@@ -26,12 +26,10 @@ struct EchonetNode: Hashable, Codable, Identifiable {
 //        case mountains = "Mountains"
 //    }
     // プロパティリスト
-    var properties:[Property]
+    var properties:[Int:Property] = [:]
 
     mutating func appendProperty(_ prop: Property) -> Void {
-        if !self.properties.contains(prop) {
-            self.properties.append(prop)
-        }
+        self.properties.updateValue(prop, forKey:prop.epc)
     }
 
     // プロパティ定義
@@ -55,13 +53,28 @@ struct EchonetNode: Hashable, Codable, Identifiable {
             return m
         }
 
-        static func parse(_ detail:[UInt8], _ deviceType: String) -> Property? {
+        static func parse(_ detail:[UInt8], _ deviceType: String, _ opc: Int) -> [Property] {
+            var l:[Property] = []
 //            print(detail[0])
 //            if detail[0] == 0x80 {
 //                return Property(epc: Int(detail[0]), gettable: true, settable: false)
 //            }
 //            return nil
-            return Property(epc: Int(detail[0]), gettable: true, settable: false, value: hexString(detail), deviceType: deviceType)
+//            return Property(epc: Int(detail[0 + offset]), gettable: true, settable: false, value: hexString(detail), deviceType: deviceType)
+            var offset = 0
+            for _ in 0..<opc {
+                let epc = Int(detail[0+offset])
+                let len = Int(detail[1+offset])
+                let value = detail[2+offset ..< 2+offset+len]
+                var m = ""
+                for v in value {
+                    m.append(self.hexString(v))
+                }
+                let prop = Property(epc: epc, gettable: true, settable: false, value: m, deviceType: deviceType)
+                l.append(prop)
+                offset += len + 2
+            }
+            return l
         }
     }
     
@@ -79,7 +92,7 @@ struct EchonetNode: Hashable, Codable, Identifiable {
 //            return node
 //        }
 //        return nil
-        return EchonetNode(id: [UInt8](key.data(using: .utf8)!), deviceType: deviceType, ipAddress: ipAddress, properties: [])
+        return EchonetNode(id: [UInt8](key.data(using: .utf8)!), deviceType: deviceType, ipAddress: ipAddress)
     }
     
     static func clear() -> Void {
