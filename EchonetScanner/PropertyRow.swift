@@ -11,6 +11,7 @@ import SwiftUI
 struct PropertyRow: View {
     @State private var star = false
     var property: EchonetNode.Property
+    var isRaw: Bool
 
     var body: some View {
         HStack {
@@ -22,11 +23,11 @@ struct PropertyRow: View {
             }
             VStack {
                 HStack {
-                    Text(EchonetDefine.propertyNameFromEpc(property.epc, property.deviceType))
+                    Text(EchonetDefine.propertyNameFromEpc(property.epc, property.getDeviceType()))
                         .foregroundColor(.green)
                         .padding(.trailing)
                     Spacer()
-                    Text(property.value)
+                    Text(property.getValue(isRaw))
                 }
                 HStack {
                     Text(EchonetDefine.epcToString(property.epc))
@@ -47,14 +48,14 @@ struct PropertyRow: View {
 
 #if DEBUG
 private let props = [
-    EchonetNode.Property( epc: 0x80, gettable: true, settable: true, value: "value_80", deviceType: "0x0130" ),
-    EchonetNode.Property( epc: 0x8a, gettable: true, settable: false, value: "value_8a", deviceType: "0x0130" ),
+    EchonetNode.Property(0x80, true, true, "192.168.1.120", [0x01,0x30,0x01], Array("0".utf8), [:]),
+    EchonetNode.Property(0x8a, true, false, "192.168.1.120", [0x01,0x30,0x01], Array("value_8a".utf8), [:]),
 ]
 struct PropertyRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PropertyRow(property: props[0])
-            PropertyRow(property: props[1])
+            PropertyRow(property: props[0], isRaw: false)
+            PropertyRow(property: props[1], isRaw: false)
         }
         .previewLayout(.fixed(width: 300, height: 70))
     }

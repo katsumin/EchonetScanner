@@ -3,13 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C39469ACAD32A0BDAA11828 /* Pods_EchonetScanner_EchonetScannerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC03EEDB99E4684ABB1B0E2E /* Pods_EchonetScanner_EchonetScannerUITests.framework */; };
-		76B34A620845CF5136DCF745 /* Pods_EchonetScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E392316BF5296C01DB11438A /* Pods_EchonetScanner.framework */; };
-		D67C01401377B2F542C6590F /* Pods_EchonetScannerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27308D84A6BECF5873009478 /* Pods_EchonetScannerTests.framework */; };
+		35692E3206A8BA1EE042D417 /* Pods_EchonetScannerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1913A45BBC2AA1FB109F87 /* Pods_EchonetScannerTests.framework */; };
+		E9E102151E0337880AE23A33 /* Pods_EchonetScanner_EchonetScannerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C3D8A51E0421C94DAA021B1 /* Pods_EchonetScanner_EchonetScannerUITests.framework */; };
+		F110C17EA0122C0007C87564 /* Pods_EchonetScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C528E6DF2AD58A0504C65C5 /* Pods_EchonetScanner.framework */; };
 		F25BB298246ABBFA00CA89FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB297246ABBFA00CA89FF /* AppDelegate.swift */; };
 		F25BB29A246ABBFA00CA89FF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB299246ABBFA00CA89FF /* SceneDelegate.swift */; };
 		F25BB29C246ABBFA00CA89FF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB29B246ABBFA00CA89FF /* ContentView.swift */; };
@@ -26,6 +26,7 @@
 		F2C073D6246CDB210087255B /* PropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D5246CDB210087255B /* PropertyList.swift */; };
 		F2C073D8246D04460087255B /* NodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D7246D04460087255B /* NodeRow.swift */; };
 		F2C073DA246D120A0087255B /* NodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D9246D120A0087255B /* NodeList.swift */; };
+		F2E58B5724877D520068BE24 /* PropertyVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E58B5624877D520068BE24 /* PropertyVariations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,13 +47,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		27308D84A6BECF5873009478 /* Pods_EchonetScannerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScannerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C213100355DE28D1D42C41D /* Pods-EchonetScanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner.debug.xcconfig"; path = "Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner.debug.xcconfig"; sourceTree = "<group>"; };
-		644EED894C59E947E4FADC90 /* Pods-EchonetScannerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScannerTests.debug.xcconfig"; path = "Target Support Files/Pods-EchonetScannerTests/Pods-EchonetScannerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8255283E3E742AE621700DEF /* Pods-EchonetScanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner.release.xcconfig"; path = "Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner.release.xcconfig"; sourceTree = "<group>"; };
-		966F06BE21A6E8F7D775DBC5 /* Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig"; path = "Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E392316BF5296C01DB11438A /* Pods_EchonetScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EC03EEDB99E4684ABB1B0E2E /* Pods_EchonetScanner_EchonetScannerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScanner_EchonetScannerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C02A542580F6FDEADD0C232 /* Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig"; path = "Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		5B0113BD7A76FDFA68F97BDC /* Pods-EchonetScanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner.debug.xcconfig"; path = "Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner.debug.xcconfig"; sourceTree = "<group>"; };
+		5C3D8A51E0421C94DAA021B1 /* Pods_EchonetScanner_EchonetScannerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScanner_EchonetScannerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F31012A7DB24E53346324C9 /* Pods-EchonetScannerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScannerTests.debug.xcconfig"; path = "Target Support Files/Pods-EchonetScannerTests/Pods-EchonetScannerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7C528E6DF2AD58A0504C65C5 /* Pods_EchonetScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FD2E84A8B74D9E0DEF3B43C /* Pods-EchonetScanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner.release.xcconfig"; path = "Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner.release.xcconfig"; sourceTree = "<group>"; };
+		AFE53BF1B32875EBBCC3CFBB /* Pods-EchonetScannerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScannerTests.release.xcconfig"; path = "Target Support Files/Pods-EchonetScannerTests/Pods-EchonetScannerTests.release.xcconfig"; sourceTree = "<group>"; };
+		DD056B1657F5A40DB1C100C0 /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig"; path = "Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		EA1913A45BBC2AA1FB109F87 /* Pods_EchonetScannerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScannerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F25BB294246ABBFA00CA89FF /* EchonetScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EchonetScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F25BB297246ABBFA00CA89FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F25BB299246ABBFA00CA89FF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,8 +78,7 @@
 		F2C073D5246CDB210087255B /* PropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyList.swift; sourceTree = "<group>"; };
 		F2C073D7246D04460087255B /* NodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeRow.swift; sourceTree = "<group>"; };
 		F2C073D9246D120A0087255B /* NodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeList.swift; sourceTree = "<group>"; };
-		F76E8373AF8522DF798669D6 /* Pods-EchonetScannerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScannerTests.release.xcconfig"; path = "Target Support Files/Pods-EchonetScannerTests/Pods-EchonetScannerTests.release.xcconfig"; sourceTree = "<group>"; };
-		FEB7060F6D0A92EE6F3BFBAB /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig"; path = "Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		F2E58B5624877D520068BE24 /* PropertyVariations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyVariations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76B34A620845CF5136DCF745 /* Pods_EchonetScanner.framework in Frameworks */,
+				F110C17EA0122C0007C87564 /* Pods_EchonetScanner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D67C01401377B2F542C6590F /* Pods_EchonetScannerTests.framework in Frameworks */,
+				35692E3206A8BA1EE042D417 /* Pods_EchonetScannerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,19 +102,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C39469ACAD32A0BDAA11828 /* Pods_EchonetScanner_EchonetScannerUITests.framework in Frameworks */,
+				E9E102151E0337880AE23A33 /* Pods_EchonetScanner_EchonetScannerUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9C83D7FD0E033A37515F680A /* Frameworks */ = {
+		100A9EB498740F484CFB84F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E392316BF5296C01DB11438A /* Pods_EchonetScanner.framework */,
-				EC03EEDB99E4684ABB1B0E2E /* Pods_EchonetScanner_EchonetScannerUITests.framework */,
-				27308D84A6BECF5873009478 /* Pods_EchonetScannerTests.framework */,
+				7C528E6DF2AD58A0504C65C5 /* Pods_EchonetScanner.framework */,
+				5C3D8A51E0421C94DAA021B1 /* Pods_EchonetScanner_EchonetScannerUITests.framework */,
+				EA1913A45BBC2AA1FB109F87 /* Pods_EchonetScannerTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -125,7 +127,7 @@
 				F25BB2B8246ABBFC00CA89FF /* EchonetScannerUITests */,
 				F25BB295246ABBFA00CA89FF /* Products */,
 				F9F8E64E4BF62AC89A4E0F44 /* Pods */,
-				9C83D7FD0E033A37515F680A /* Frameworks */,
+				100A9EB498740F484CFB84F8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -188,6 +190,7 @@
 		F25BB2C7246AC41F00CA89FF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F2E58B5324877C890068BE24 /* Properties */,
 				F25BB2C8246AC44100CA89FF /* UserData.swift */,
 				F25BB2CB246ACAAE00CA89FF /* Data.swift */,
 				F25BB2CD246ACB1000CA89FF /* EchonetNode.swift */,
@@ -203,15 +206,39 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		F2E58B5324877C890068BE24 /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				F2E58B5524877CC00068BE24 /* super */,
+				F2E58B5424877CAC0068BE24 /* 0x0288 */,
+			);
+			path = Properties;
+			sourceTree = "<group>";
+		};
+		F2E58B5424877CAC0068BE24 /* 0x0288 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = 0x0288;
+			sourceTree = "<group>";
+		};
+		F2E58B5524877CC00068BE24 /* super */ = {
+			isa = PBXGroup;
+			children = (
+				F2E58B5624877D520068BE24 /* PropertyVariations.swift */,
+			);
+			path = super;
+			sourceTree = "<group>";
+		};
 		F9F8E64E4BF62AC89A4E0F44 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4C213100355DE28D1D42C41D /* Pods-EchonetScanner.debug.xcconfig */,
-				8255283E3E742AE621700DEF /* Pods-EchonetScanner.release.xcconfig */,
-				966F06BE21A6E8F7D775DBC5 /* Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig */,
-				FEB7060F6D0A92EE6F3BFBAB /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */,
-				644EED894C59E947E4FADC90 /* Pods-EchonetScannerTests.debug.xcconfig */,
-				F76E8373AF8522DF798669D6 /* Pods-EchonetScannerTests.release.xcconfig */,
+				5B0113BD7A76FDFA68F97BDC /* Pods-EchonetScanner.debug.xcconfig */,
+				7FD2E84A8B74D9E0DEF3B43C /* Pods-EchonetScanner.release.xcconfig */,
+				1C02A542580F6FDEADD0C232 /* Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig */,
+				DD056B1657F5A40DB1C100C0 /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */,
+				6F31012A7DB24E53346324C9 /* Pods-EchonetScannerTests.debug.xcconfig */,
+				AFE53BF1B32875EBBCC3CFBB /* Pods-EchonetScannerTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -223,11 +250,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F25BB2BE246ABBFC00CA89FF /* Build configuration list for PBXNativeTarget "EchonetScanner" */;
 			buildPhases = (
-				A7610C0376E07B37C25CC5F0 /* [CP] Check Pods Manifest.lock */,
+				0A946B7E432974738F1167E5 /* [CP] Check Pods Manifest.lock */,
 				F25BB290246ABBFA00CA89FF /* Sources */,
 				F25BB291246ABBFA00CA89FF /* Frameworks */,
 				F25BB292246ABBFA00CA89FF /* Resources */,
-				B545FB740D9BC63D8207F815 /* [CP] Embed Pods Frameworks */,
+				CFAFD52BA6A0C50C8CBB8391 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -242,7 +269,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F25BB2C1246ABBFC00CA89FF /* Build configuration list for PBXNativeTarget "EchonetScannerTests" */;
 			buildPhases = (
-				C1A085ECA00CF5019065F6E4 /* [CP] Check Pods Manifest.lock */,
+				76D62DF881EBAABB06723BEE /* [CP] Check Pods Manifest.lock */,
 				F25BB2A6246ABBFC00CA89FF /* Sources */,
 				F25BB2A7246ABBFC00CA89FF /* Frameworks */,
 				F25BB2A8246ABBFC00CA89FF /* Resources */,
@@ -261,11 +288,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F25BB2C4246ABBFC00CA89FF /* Build configuration list for PBXNativeTarget "EchonetScannerUITests" */;
 			buildPhases = (
-				A9EA63F20E064392A898926C /* [CP] Check Pods Manifest.lock */,
+				2AC8C344C87CAEE2B1897BD0 /* [CP] Check Pods Manifest.lock */,
 				F25BB2B1246ABBFC00CA89FF /* Sources */,
 				F25BB2B2246ABBFC00CA89FF /* Frameworks */,
 				F25BB2B3246ABBFC00CA89FF /* Resources */,
-				7617A4F8E8FF101C32BC7D2A /* [CP] Embed Pods Frameworks */,
+				66A0D7021D71423E719D5BA0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -349,24 +376,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7617A4F8E8FF101C32BC7D2A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A7610C0376E07B37C25CC5F0 /* [CP] Check Pods Manifest.lock */ = {
+		0A946B7E432974738F1167E5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -388,7 +398,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A9EA63F20E064392A898926C /* [CP] Check Pods Manifest.lock */ = {
+		2AC8C344C87CAEE2B1897BD0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -410,24 +420,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B545FB740D9BC63D8207F815 /* [CP] Embed Pods Frameworks */ = {
+		66A0D7021D71423E719D5BA0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C1A085ECA00CF5019065F6E4 /* [CP] Check Pods Manifest.lock */ = {
+		76D62DF881EBAABB06723BEE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -449,6 +459,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CFAFD52BA6A0C50C8CBB8391 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EchonetScanner/Pods-EchonetScanner-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -457,6 +484,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F25BB298246ABBFA00CA89FF /* AppDelegate.swift in Sources */,
+				F2E58B5724877D520068BE24 /* PropertyVariations.swift in Sources */,
 				F25BB2CC246ACAAE00CA89FF /* Data.swift in Sources */,
 				F2C073D8246D04460087255B /* NodeRow.swift in Sources */,
 				F25BB2CE246ACB1000CA89FF /* EchonetNode.swift in Sources */,
@@ -628,7 +656,7 @@
 		};
 		F25BB2BF246ABBFC00CA89FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C213100355DE28D1D42C41D /* Pods-EchonetScanner.debug.xcconfig */;
+			baseConfigurationReference = 5B0113BD7A76FDFA68F97BDC /* Pods-EchonetScanner.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -649,7 +677,7 @@
 		};
 		F25BB2C0246ABBFC00CA89FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8255283E3E742AE621700DEF /* Pods-EchonetScanner.release.xcconfig */;
+			baseConfigurationReference = 7FD2E84A8B74D9E0DEF3B43C /* Pods-EchonetScanner.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -670,7 +698,7 @@
 		};
 		F25BB2C2246ABBFC00CA89FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 644EED894C59E947E4FADC90 /* Pods-EchonetScannerTests.debug.xcconfig */;
+			baseConfigurationReference = 6F31012A7DB24E53346324C9 /* Pods-EchonetScannerTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -692,7 +720,7 @@
 		};
 		F25BB2C3246ABBFC00CA89FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F76E8373AF8522DF798669D6 /* Pods-EchonetScannerTests.release.xcconfig */;
+			baseConfigurationReference = AFE53BF1B32875EBBCC3CFBB /* Pods-EchonetScannerTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -714,7 +742,7 @@
 		};
 		F25BB2C5246ABBFC00CA89FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 966F06BE21A6E8F7D775DBC5 /* Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig */;
+			baseConfigurationReference = 1C02A542580F6FDEADD0C232 /* Pods-EchonetScanner-EchonetScannerUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -734,7 +762,7 @@
 		};
 		F25BB2C6246ABBFC00CA89FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEB7060F6D0A92EE6F3BFBAB /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */;
+			baseConfigurationReference = DD056B1657F5A40DB1C100C0 /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

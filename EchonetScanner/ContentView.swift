@@ -7,8 +7,10 @@
 //
 
 import SwiftUI
+import ELSwift
 
 struct ContentView: View {
+    @State private var isRaw = false;
     @State private var edt = ""
     var property: EchonetNode.Property
 
@@ -18,16 +20,17 @@ struct ContentView: View {
     func buttonColor(_ enable: Bool) -> Color {
         return enable ?Color.blue :Color.gray
     }
+    func deviceType() -> String {
+        return self.property.getDeviceType()
+    }
 
     var body: some View {
         VStack {
             Text("プロパティ操作")
                 .font(.title)
-//                .bold()
-//            Spacer()
             VStack {
                 HStack {
-                    Text(EchonetDefine.propertyNameFromEpc(property.epc, property.deviceType))
+                    Text(EchonetDefine.propertyNameFromEpc(property.epc, property.getDeviceType()))
                         .font(.title)
                         .foregroundColor(.green)
                         .padding(.leading, 5.0)
@@ -35,7 +38,6 @@ struct ContentView: View {
                 }
                 HStack {
                     Spacer()
-//                    Text(String.init(format: "EPC:%02X", property.epc))
                     Text(EchonetDefine.epcToString(property.epc))
                         .font(.subheadline)
                         .foregroundColor(.orange)
@@ -46,7 +48,7 @@ struct ContentView: View {
                 Text("EDT")
                     .font(.title)
                     .padding(.leading, 5.0)
-                TextField(property.value, text: $edt)
+                TextField(property.getValue(isRaw), text: $edt)
 //                    .border(Color.gray)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.title)
@@ -54,11 +56,27 @@ struct ContentView: View {
             }
             HStack {
                 Spacer()
+                VStack(alignment: .center) {
+                    Toggle(isOn: $isRaw) {
+                        Text("")
+                    }
+                    .frame(width: 0.0)
+                    Text("Raw Data")
+                }
+                Spacer()
                 Button(action: {
                     print(self.edt)
+                    print(self.property)
+                    do {
+                        try ELSwift.sendOPC1(self.property.ipAddress, [0x0e,0xf0,0x01], self.property.eoj, UInt8(ELSwift.GET), UInt8(self.property.epc), [0x00])
+                    } catch let error {
+                        print(error)
+                    }
                 }){
-                    Image(systemName: "square.and.arrow.down")
-                    Text("Get")
+                    VStack {
+                        Image(systemName: "square.and.arrow.down")
+                        Text("Get")
+                    }
                 }
                 .padding(.vertical, 5)
                 .padding(.horizontal, 30.0)
@@ -72,8 +90,10 @@ struct ContentView: View {
                 Button(action: {
                     print("tapped")
                 }){
-                    Image(systemName: "square.and.arrow.up")
-                    Text("Set")
+                    VStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Set")
+                    }
                 }
                 .padding(.vertical, 5)
                 .padding(.horizontal, 30.0)
@@ -93,8 +113,9 @@ struct ContentView: View {
 
 #if DEBUG
 private let props = [
-    EchonetNode.Property( epc: 0x80, gettable: true, settable: true, value: "value80", deviceType: "0x0130"),
-    EchonetNode.Property( epc: 0x8a, gettable: true, settable: false, value: "value8a", deviceType: "0x0130"),
+    PropertySelectable1Byte(0x80, true, true, "192.168.1.120", [0x01,0x30,0x01], [0x30],
+        ["0x30": "ON", "0x31": "OFF"]),
+    EchonetNode.Property(0x8a, true, false, "192.168.1.120", [0x01,0x30,0x01], Array("value8a".utf8), [:]),
 ]
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

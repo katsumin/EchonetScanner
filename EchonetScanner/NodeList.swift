@@ -23,8 +23,6 @@ struct NodeList: View {
         return m
     }
     private func extractNodes() -> [EchonetNode] {
-//        let sortedDic = self.userData.echonetNodes.sorted(){$0.0 < $1.0}
-//        print("props: \(sortedDic)")
         var l:[EchonetNode] = []
         for pair in self.userData.echonetNodes.sorted(by: {$0.0 < $1.0}) {
             for subPair in pair.value.sorted(by: {$0.0 < $1.0}) {
@@ -35,11 +33,9 @@ struct NodeList: View {
     }
     private func extractProperties(_ node:EchonetNode) -> [EchonetNode.Property] {
         let sortedDic = node.properties.sorted(){$0.0 < $1.0}
-//        print("props: \(sortedDic)")
         var l:[EchonetNode.Property] = []
         for pair in sortedDic {
             l.append(pair.value)
-//            print(pair.value)
         }
         return l
     }
@@ -52,14 +48,12 @@ struct NodeList: View {
                     Button(action: {
                         print("tap")
                         self.userData.echonetNodes.removeAll()
-//                        map.removeAll()
                     }){
                         Text("クリア")
                     }
                     .padding(.trailing)
                     Button(action: {
                         print("tap")
-//                        self.userData.echonetNodes.removeAll()
                         ELSwift.search()
                     }){
                         Text("機器検索")
@@ -67,10 +61,11 @@ struct NodeList: View {
                     .padding(.trailing)
                 }
                 List {
-                    ForEach (self.extractNodes(), id:\.self) { node in
+                    ForEach (self.extractNodes(), id:\.id) { node in
                         NavigationLink(destination: PropertyList(nodeName: EchonetDefine.nameFromDeviceType(node.deviceType), properties: self.extractProperties(node))) {
                             NodeRow(deviceType: node.deviceType, ipAddress: node.ipAddress)
                         }
+                    .navigationBarHidden(true)
                     }
                 }.navigationBarTitle(
                     Text("Echonet機器一覧")
@@ -92,20 +87,19 @@ struct NodeList: View {
                         if esv == ELSwift.GET_RES || esv == ELSwift.INF {
                             let opc = Int(elsv.OPC)
                             print("ip:\(rinfo.address), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), opc:\(opc), datail:\(self.hexString(detail))")
-                            let deviceType = String(format:"0x%04x", Int(seoj[0]) << 8 | Int(seoj[1]))
-                            for prop in EchonetNode.Property.parse(detail, deviceType, opc) {
+                            for prop in EchonetNode.Property.parse(detail, opc, rinfo.address, seoj) {
                                 var nodesAtAddr = self.userData.echonetNodes[rinfo.address]
                                 if nodesAtAddr == nil {
                                     nodesAtAddr = [:]
                                 }
                                 self.userData.echonetNodes.updateValue(nodesAtAddr!, forKey: rinfo.address)
+                                let deviceType = prop.getDeviceType()
                                 var node = nodesAtAddr![deviceType]
                                 if node == nil {
                                     node = EchonetNode.create(rinfo.address, seoj, detail)
                                 }
                                 node!.appendProperty(prop)
                                 self.userData.echonetNodes[rinfo.address]!.updateValue(node!, forKey: deviceType)
-//                                print(self.userData.echonetNodes)
                             }
                         }
                     }
@@ -113,6 +107,7 @@ struct NodeList: View {
             }catch let error{
                 print( error )
             }
+            ELSwift.search()
         }
     }
 }

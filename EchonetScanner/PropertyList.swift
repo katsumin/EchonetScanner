@@ -9,23 +9,37 @@
 import SwiftUI
 
 struct PropertyList: View {
+    @State private var isRaw = false
     var nodeName: String
     var properties: [EchonetNode.Property]
     
     var body: some View {
         VStack {
-//            Text(nodeName).font(.title)
-//            Text("機器詳細").font(.title)
             NavigationView {
-                List {
-                    ForEach (properties, id:\.self) { property in
-                        NavigationLink(destination: ContentView(property: property)) {
-                            PropertyRow(property: property)
+                VStack {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "doc.plaintext")
+                        Text("Raw Data")
+                        .fontWeight(.thin)
+                        .foregroundColor(Color.blue)
+                        Toggle(isOn: $isRaw) {
+                            Text("")
+                        }
+                        .padding(.trailing)
+                        .frame(width: 60.0)
+                    }
+                    .padding(.top, 5.0)
+                    List {
+                        ForEach (properties, id:\.epc) { property in
+                            NavigationLink(destination: ContentView(property: property)) {
+                                PropertyRow(property: property, isRaw: self.isRaw)
+                            }
+                            .navigationBarHidden(true)
                         }
                     }
-                }
-//                .navigationBarTitle(Text("機器詳細"))
                     .navigationBarTitle(Text(nodeName))
+                }
             }
         }
     }
@@ -33,9 +47,10 @@ struct PropertyList: View {
 
 #if DEBUG
 private let props = [
-    EchonetNode.Property( epc: 0x80, gettable: true, settable: true, value: "v80", deviceType: "0x0130"),
-    EchonetNode.Property( epc: 0x84, gettable: true, settable: false, value: "v80", deviceType: "0x0130"),
-    EchonetNode.Property( epc: 0xb0, gettable: true, settable: false, value: "v80", deviceType: "0x0130"),
+    PropertySelectable1Byte(0x80, true, true, "192.168.1.120", [0x01,0x30,0x01], [0x30],
+        ["0x30": "ON", "0x31": "OFF"]),
+    PropertyInstantPower(0x84, true, false, "192.168.1.120", [0x01,0x30,0x01], [0x00, 0x64], [:]),
+    EchonetNode.Property(0xb0, true, false, "192.168.1.120", [0x01,0x30,0x01], Array("vb0".utf8), [:]),
 ]
 struct PropertyList_Previews: PreviewProvider {
     static var previews: some View {
