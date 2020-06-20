@@ -46,7 +46,7 @@ class PropertyInstantPower: PropertySub {
         if raw {
             return super.getValue(raw)
         }
-        let v = UInt(values[0]) << 8 | UInt(values[1])
+        let v = UInt16(values[0]) << 8 | UInt16(values[1])
         return String.init(format:"%5dW", v)
     }
 }
@@ -56,8 +56,9 @@ class PropertyInstantCurrent: PropertySub {
         if raw {
             return super.getValue(raw)
         }
-        let v = UInt(values[0]) << 8 | UInt(values[1])
-        return String.init(format:"%4d.%dA", v / 10, v % 10)
+        let v = UInt16(values[0]) << 8 | UInt16(values[1])
+//        return String.init(format:"%4d.%dA", v / 10, v % 10)
+        return String.init(format:"%5.1fA", Double(v) / 10.0)
     }
 }
 
@@ -66,7 +67,7 @@ class PropertyInstantPowerSigned: PropertySub {
         if raw {
             return super.getValue(raw)
         }
-        let v = Int(values[0]) << 24 | Int(values[1]) << 16 | Int(values[2]) << 8 | Int(values[3])
+        let v = Int32(values[0]) << 24 | Int32(values[1]) << 16 | Int32(values[2]) << 8 | Int32(values[3])
         if -2147483647 <= v && v <= 2147483645 {
             return String.init(format:"%10dW", v)
         } else {
@@ -80,9 +81,10 @@ class PropertyInstantCurrentSigned: PropertySub {
         if raw {
             return super.getValue(raw)
         }
-        let r = Int(values[0]) << 8 | Int(values[1])
-        let t = Int(values[2]) << 8 | Int(values[3])
-        return String.init(format:"R:%4d.%dA, T:%4d.%dA", r / 10, r % 10, t / 10, t % 10)
+        let r = Int16(values[0]) << 8 | Int16(values[1])
+        let t = Int16(values[2]) << 8 | Int16(values[3])
+//        return String.init(format:"R:%4d.%dA, T:%4d.%dA", r / 10, r % 10, t / 10, t % 10)
+        return String.init(format:"R:%5.1fA, T:%5.1fA", Double(r) / 10.0, Double(t) / 10.0)
     }
 }
 
@@ -91,8 +93,9 @@ class PropertyIntegratedPower: PropertySub {
         if raw {
             return super.getValue(raw)
         }
-        let v = UInt(values[0]) << 24 | UInt(values[1]) << 16 | UInt(values[2]) << 8 | UInt(values[3])
-        return String.init(format:"%6d.%03dW", v / 1000, v % 1000)
+        let v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
+//        return String.init(format:"%6d.%03dW", v / 1000, v % 1000)
+        return String.init(format:"%9.3fW", Double(v) / 1000.0)
     }
 }
 
@@ -131,7 +134,8 @@ class PropertyTemperatureSignedPer10: PropertySub {
         }
         let v = Int(values[0])
         if -127 <= v && v <= 125 {
-            return String.init(format:"%2d.%d℃", v / 10, v % 10)
+//            return String.init(format:"%2d.%d℃", v / 10, v % 10)
+            return String.init(format:"%3.1f℃", Double(v) / 10.0)
         } else {
             return "unknown"
         }
@@ -237,7 +241,7 @@ class PropertyInteger4Byte: PropertySub {
 }
 
 class PropertyEnergy4Byte: PropertySub {
-    var d3:UInt = 1
+    var d3:UInt32 = 1
 //    var d7:UInt = 6
     var e1 = 0x01
     
@@ -245,7 +249,7 @@ class PropertyEnergy4Byte: PropertySub {
         if raw {
             return super.getValue(raw)
         }
-        var v = UInt(values[0]) << 24 | UInt(values[1]) << 16 | UInt(values[2]) << 8 | UInt(values[3])
+        var v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
         v *= d3
         switch e1 {
         case 0x00:

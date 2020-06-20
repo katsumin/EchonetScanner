@@ -15,12 +15,15 @@ struct PropertyRow: View {
 
     var body: some View {
         HStack {
-            Button(action: {
-                self.star.toggle()
-                print("star button")
-            }) {
-                Image(systemName: self.star ?"star.fill" :"star")
-            }
+//            Button(action: {
+//                self.star.toggle()
+//                print("star button")
+//            }) {
+//                Image(systemName: self.star ?"star.fill" :"star")
+//            }
+            Image(systemName: "p.circle")
+                .padding(.horizontal)
+                .frame(width: 30.0)
             VStack {
                 HStack {
                     Text(EchonetDefine.propertyNameFromEpc(property.epc, property.getDeviceType()))

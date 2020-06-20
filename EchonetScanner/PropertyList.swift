@@ -14,32 +14,30 @@ struct PropertyList: View {
     var properties: [EchonetNode.Property]
     
     var body: some View {
-        VStack {
-            NavigationView {
-                VStack {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "doc.plaintext")
-                        Text("Raw Data")
-                        .fontWeight(.thin)
-                        .foregroundColor(Color.blue)
-                        Toggle(isOn: $isRaw) {
-                            Text("")
-                        }
-                        .padding(.trailing)
-                        .frame(width: 60.0)
+        NavigationView {
+            VStack {
+                HStack {
+                    Spacer()
+                    Image(systemName: "doc.plaintext")
+                    Text("Raw Data")
+                    .fontWeight(.thin)
+                    .foregroundColor(Color.blue)
+                    Toggle(isOn: $isRaw) {
+                        Text("")
                     }
-                    .padding(.top, 5.0)
-                    List {
-                        ForEach (properties, id:\.epc) { property in
-                            NavigationLink(destination: ContentView(property: property)) {
-                                PropertyRow(property: property, isRaw: self.isRaw)
-                            }
-                            .navigationBarHidden(true)
-                        }
-                    }
-                    .navigationBarTitle(Text(nodeName))
+                    .padding(.trailing)
+                    .frame(width: 60.0)
                 }
+                .padding(.top, 5.0)
+                List {
+                    ForEach (properties, id:\.epc) { property in
+                        NavigationLink(destination: ContentView(property: property)) {
+                            PropertyRow(property: property, isRaw: self.isRaw)
+                        }
+                        .navigationBarHidden(true)
+                    }
+                }
+                .navigationBarTitle(Text(nodeName), displayMode:.inline)
             }
         }
     }

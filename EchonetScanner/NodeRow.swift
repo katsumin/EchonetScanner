@@ -14,17 +14,19 @@ struct NodeRow: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "star.fill")
+            getIcon(deviceType)
+                .resizable()
+                .padding(.all, 1.0)
+                .frame(width: 30.0, height: 30.0)
+                .rotationEffect(Angle.init(degrees: EchonetDefine.iconRotateFromDevieType(deviceType)))
             VStack {
                 HStack {
                 Text(EchonetDefine.nameFromDeviceType(deviceType))
                     .font(.body)
-//                    .foregroundColor(.green)
                     Spacer()
                 }
                 HStack {
                     Text(EchonetDefine.deviceTypeToString(deviceType))
-//                        .foregroundColor(.green)
                     Spacer()
                     Text(ipAddress)
                         .foregroundColor(.orange)
@@ -32,6 +34,17 @@ struct NodeRow: View {
             }
             Spacer()
         }
+    }
+    
+    func getIcon(_ deviceType: Int) -> Image {
+        let iconName = EchonetDefine.iconFromDevieType(deviceType)
+        var image: Image
+        if iconName.starts(with: "Other.") {
+            image = Image(String(iconName[iconName.index(iconName.startIndex, offsetBy: 6)..<iconName.endIndex]))
+        } else {
+            image = Image(systemName: iconName)
+        }
+        return image
     }
 }
 

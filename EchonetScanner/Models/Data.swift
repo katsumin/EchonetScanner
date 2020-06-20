@@ -32,7 +32,7 @@ func load<T: Decodable>(_ filename: String) -> T {
 }
 
 struct EchonetDefine :Decodable {
-    var device_types : Dictionary<String, String>
+    var device_types : Dictionary<String, DeviceDefine>
     var properties: Dictionary<String, Dictionary<String, PropertyDefine>>
     
     static func propertyNameFromEpc(_ epc: Int, _ deviceType: String) -> String {
@@ -52,10 +52,24 @@ struct EchonetDefine :Decodable {
     }
     
     static func nameFromDeviceType(_ deviceType: Int) -> String {
-        guard let name = echonetDefine.device_types[deviceTypeToString(deviceType)] else {
-            return "unknown"
+        if let device = echonetDefine.device_types[deviceTypeToString(deviceType)] {
+            return device.name
         }
-        return name
+        return "unknown"
+    }
+    
+    static func iconFromDevieType(_ deviceType: Int) -> String {
+        if let device = echonetDefine.device_types[deviceTypeToString(deviceType)], let icon = device.icon_name {
+            return icon
+        }
+        return "star"
+    }
+    
+    static func iconRotateFromDevieType(_ deviceType: Int) -> Double {
+        if let device = echonetDefine.device_types[deviceTypeToString(deviceType)], let rotate = device.icon_rotate {
+            return rotate
+        }
+        return 0
     }
     
     static func deviceTypeToString(_ deviceType: Int) -> String {
@@ -68,4 +82,10 @@ struct PropertyDefine: Decodable {
     var type: String
     var select_items : [String:String]?
     var class_name : String?
+}
+
+struct DeviceDefine: Decodable {
+    var name: String
+    var icon_name: String?
+    var icon_rotate: Double?
 }
