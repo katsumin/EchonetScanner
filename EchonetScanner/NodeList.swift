@@ -43,23 +43,7 @@ struct NodeList: View {
     var body: some View {
         NavigationView {
             VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        print("tap")
-                        self.userData.echonetNodes.removeAll()
-                    }){
-                        Text("クリア")
-                    }
-                    .padding(.trailing)
-                    Button(action: {
-                        print("tap")
-                        ELSwift.search()
-                    }){
-                        Text("機器検索")
-                    }
-                    .padding(.trailing)
-                }
+                Spacer()
                 List {
                     ForEach (self.extractNodes(), id:\.id) { node in
                         NavigationLink(destination: PropertyList(nodeName: EchonetDefine.nameFromDeviceType(node.deviceType), properties: self.extractProperties(node))) {
@@ -67,8 +51,18 @@ struct NodeList: View {
                         }
                     .navigationBarHidden(true)
                     }
-                }.navigationBarTitle(
-                    Text("Echonet機器一覧")
+                }
+                .navigationBarTitle(Text("Echonet機器一覧").font(.title), displayMode: .inline)
+                .navigationBarItems(trailing:
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            ELSwift.search()
+                        }){
+                            Image(systemName: "arrow.clockwise")
+                        }
+                        .padding(.trailing)
+                    }
                 )
             }
         }.onAppear(){

@@ -93,6 +93,10 @@ struct EchonetNode {
         func getValue(_ raw: Bool) -> String {
             return EchonetNode.Property.hexString(values)
         }
+
+        func isSelectable() -> Bool {
+            return self.selectItems != nil && self.selectItems!.count > 0
+        }
     }
     
     static func create(_ ipAddress:String, _ seoj:[UInt8], _ detail:[UInt8]) -> EchonetNode {

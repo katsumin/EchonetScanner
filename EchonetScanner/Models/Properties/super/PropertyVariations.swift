@@ -13,30 +13,36 @@ class PropertySub: EchonetNode.Property {
 
 class PropertySelectable1Byte: PropertySub {
     override func getValue(_ raw: Bool) -> String {
-        if !raw, let items = selectItems, let value = items[String.init(format: "0x%02x", values[0])] {
+        let key = String.init(format: "0x%02x", values[0])
+        if !raw, let items = selectItems, let value = items[key] {
             return value
         } else {
-            return super.getValue(raw)
+//            return super.getValue(raw)
+            return key
         }
     }
 }
 
 class PropertySelectable3Byte: PropertySub {
     override func getValue(_ raw: Bool) -> String {
-        if !raw, let items = selectItems, let value = items[String.init(format: "0x%02x%02x%02x", values[0], values[1], values[2])] {
+        let key = String.init(format: "0x%02x%02x%02x", values[0], values[1], values[2])
+        if !raw, let items = selectItems, let value = items[key] {
             return value
         } else {
-            return super.getValue(raw)
+            //            return super.getValue(raw)
+            return key
         }
     }
 }
 
 class PropertySelectableLocation: PropertySub {
     override func getValue(_ raw: Bool) -> String {
-        if !raw, let items = selectItems, let value = items[String.init(format: "0x%02x", values[0] & 0x78)] {
+        let key = String.init(format: "0x%02x", values[0] & 0x78)
+        if !raw, let items = selectItems, let value = items[key] {
             return value
         } else {
-            return super.getValue(raw)
+            //            return super.getValue(raw)
+            return key
         }
     }
 }
@@ -95,7 +101,7 @@ class PropertyIntegratedPower: PropertySub {
         }
         let v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
 //        return String.init(format:"%6d.%03dW", v / 1000, v % 1000)
-        return String.init(format:"%9.3fW", Double(v) / 1000.0)
+        return String.init(format:"%9.3fkWh", Double(v) / 1000.0)
     }
 }
 

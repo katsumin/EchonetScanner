@@ -10,18 +10,69 @@ import SwiftUI
 import ELSwift
 
 struct ContentView: View {
-    @State private var isRaw = false;
+    @State private var isRaw = false
     @State private var edt = ""
     var property: EchonetNode.Property
-
-    func captionColor(_ enable: Bool) -> Color {
+    
+    private func captionColor(_ enable: Bool) -> Color {
         return enable ?Color.white :Color.black
     }
-    func buttonColor(_ enable: Bool) -> Color {
+    private func buttonColor(_ enable: Bool) -> Color {
         return enable ?Color.blue :Color.gray
     }
-    func deviceType() -> String {
+    private func deviceType() -> String {
         return self.property.getDeviceType()
+    }
+    private func getSelectItems(_ prop: EchonetNode.Property) -> [(String,String)] {
+        var selectItems:[(String,String)] = []
+        if let items = prop.selectItems {
+            for pair in items.sorted(by: {$0.0 < $1.0}) {
+                if isRaw {
+                    selectItems.append((pair.key,pair.key))
+                } else {
+                    selectItems.append((pair.key,pair.value))
+                }
+            }
+        }
+        return selectItems
+    }
+    
+    func propertyView(_ prop: EchonetNode.Property, _ selectItems: [(String,String)]) -> some View {
+        HStack {
+            if prop.isSelectable() {
+//                Spacer()
+//                Picker(selection: $edt, label:Text("EDT")
+////                    .font(.title)
+//                ) {
+//                    ForEach(selectItems, id:\.0) { item in
+//                        Text(item.1).multilineTextAlignment(.center).tag(item.0)
+//                    }
+//                }
+////                .padding(.horizontal, 0.0)
+////                .pickerStyle(SegmentedPickerStyle())
+////                .pickerStyle(WheelPickerStyle())
+//                Spacer()
+                NavigationView {
+                    Form {
+                        Picker(selection: $edt, label:Text("EDT").font(.title)) {
+                            ForEach(selectItems, id:\.0) { item in
+                                Text(item.1).tag(item.0).font(.title)
+                            }
+                        }
+                    }
+                }
+            } else {
+                Text("EDT")
+                    .font(.title)
+                    .padding(.leading, 5.0)
+                    .frame(width: 60.0)
+                TextField(property.getValue(isRaw), text: $edt)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .font(.title)
+                    .padding(.trailing, 5.0)
+            }
+        }
+        .padding([.top, .leading, .trailing], 0.0)
     }
 
     var body: some View {
@@ -44,16 +95,7 @@ struct ContentView: View {
                         .padding(.trailing, 5.0)
                 }
             }
-            HStack {
-                Text("EDT")
-                    .font(.title)
-                    .padding(.leading, 5.0)
-                TextField(property.getValue(isRaw), text: $edt)
-//                    .border(Color.gray)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .font(.title)
-                    .padding(.trailing, 5.0)
-            }
+            propertyView(property, getSelectItems(property))
             HStack {
                 Spacer()
                 VStack(alignment: .center) {
@@ -75,13 +117,14 @@ struct ContentView: View {
                 }){
                     VStack {
                         Image(systemName: "square.and.arrow.down")
+                            .padding(.all, 5.0)
                         Text("Get")
                     }
                 }
                 .padding(.vertical, 5)
                 .padding(.horizontal, 30.0)
                 .foregroundColor(captionColor(property.gettable))
-                .font(.title)
+//                .font(.title)
                 .background(buttonColor(property.gettable))
                 .disabled(!property.gettable)
                 .border(buttonColor(property.gettable), width: 5.0)
@@ -92,6 +135,7 @@ struct ContentView: View {
                 }){
                     VStack {
                         Image(systemName: "square.and.arrow.up")
+                            .padding(.all, 5.0)
                         Text("Set")
                     }
                 }
@@ -99,7 +143,7 @@ struct ContentView: View {
                 .padding(.horizontal, 30.0)
                 .foregroundColor(captionColor(property.settable))
 //                    .buttonStyle(BorderlessButtonStyle())
-                .font(.title)
+//                .font(.title)
                 .background(buttonColor(property.settable))
                 .disabled(!property.settable)
                 .border(buttonColor(property.settable), width: 5.0)
@@ -107,6 +151,12 @@ struct ContentView: View {
                 Spacer()
             }
             Spacer()
+        }
+        .padding(.top, 0.0)
+        .onAppear(){
+            if self.property.isSelectable() {
+                self.edt = self.property.getValue(true)
+            }
         }
     }
 }
