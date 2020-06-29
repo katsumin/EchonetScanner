@@ -40,16 +40,28 @@
 <img src="./view2.png" width="300">
 </div>
 
-## プロパティ単位表示
+## プロパティ一覧（生データ表示）
+
+<div align="center">
+<img src="./view4.png" width="300">
+</div>
+
+## プロパティ単位表示（値形式）
 
 <div align="center">
 <img src="./view3.png" width="300">
 </div>
 
-## プロパティ一覧（生データ表示）
+## プロパティ単位表示（選択形式）
 
 <div align="center">
-<img src="./view4.png" width="300">
+<img src="./view5.png" width="300">
+</div>
+
+## プロパティ単位表示（選択形式、全選択肢）
+
+<div align="center">
+<img src="./view6.png" width="300">
 </div>
 
 # 依存ライブラリ
