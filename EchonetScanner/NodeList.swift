@@ -11,6 +11,7 @@ import ELSwift
 
 struct NodeList: View {
     @EnvironmentObject var userData: UserData
+    @State private var delay:Timer? = nil
 
     private func hexString(_ data: UInt8) -> String {
         return String.init(format: "%02x", data)
@@ -38,6 +39,74 @@ struct NodeList: View {
             l.append(pair.value)
         }
         return l
+    }
+    private func getPropertyMap(prop: EchonetNode.Property) -> [UInt8]{
+        var array:[UInt8] = prop.values
+        if array.count >= 16 { // プロパティマップ16バイト未満は記述形式１
+    //                        // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
+    //                        do {
+    //                            array = try ELSwift.parseMapForm2( ELSwift.bytesToString( array ) )
+    //                        }catch let error{
+    //                            print( error )
+    //                        }
+            var val:UInt = 0x80
+            var ret:[UInt8] = []
+            // bit loop
+            for bit:UInt8 in (0..<8) {
+                // byte loop
+                for byt in (1..<17) {
+                    if 0x01 == ((array[byt] >> bit) & 0x01) {
+                        // print("array[byt] \(array[byt]), byt \(byt), bit \(bit), val \(val)")
+                        ret.append( UInt8(val) )
+                    }
+                    val += 1
+                }
+            }
+            ret.insert(UInt8(ret.count), at: 0)
+            array = ret
+        }
+//        print(array)
+        return array
+    }
+    private func reflectSettable() {
+        print("reflect settables")
+        for nodes in self.userData.echonetNodes.values {
+            for node in nodes.values {
+                if let setProps = node.properties[0x9e] { // Setプロパティマップ
+                    let array = getPropertyMap(prop: setProps)
+                    
+//                    var array:[UInt8] = setProps.values
+//                    if( array.count >= 16 ) { // プロパティマップ16バイト未満は記述形式１
+////                        // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
+////                        do {
+////                            array = try ELSwift.parseMapForm2( ELSwift.bytesToString( array ) )
+////                        }catch let error{
+////                            print( error )
+////                        }
+//                        var val:UInt = 0x80
+//                        var ret:[UInt8] = []
+//                        // bit loop
+//                        for bit:UInt8 in (0..<8) {
+//                            // byte loop
+//                            for byt in (1..<17) {
+//                                if(  0x01  ==  ((array[byt] >> bit) & 0x01)   ) {
+//                                    // print("array[byt] \(array[byt]), byt \(byt), bit \(bit), val \(val)")
+//                                    ret.append( UInt8(val) )
+//                                }
+//                                val += 1
+//                            }
+//                        }
+//                        ret.insert(UInt8(ret.count), at: 0)
+//                        array = ret
+//                    }
+                    for prop in node.properties.values {
+                        if array.contains(UInt8(prop.epc)) {
+                            prop.settable = true
+                        }
+                    }
+                }
+            }
+        }
     }
 
     var body: some View {
@@ -97,6 +166,19 @@ struct NodeList: View {
                             }
                         }
                     }
+                    // delayタイマ起動
+                    if self.delay != nil {
+                        // 動作中のタイマは止める
+                        self.delay!.invalidate()
+                        self.delay = nil
+                    }
+                    self.delay = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: {_ in
+                        // 全プロパティの取得を見計らって、各プロパティのsettable値を再設定
+                        self.reflectSettable()
+                        // 動作中のタイマは止める
+                        self.delay!.invalidate()
+                        self.delay = nil
+                    })
                 }, 4)
             }catch let error{
                 print( error )
