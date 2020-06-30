@@ -42,13 +42,8 @@ struct NodeList: View {
     }
     private func getPropertyMap(prop: EchonetNode.Property) -> [UInt8]{
         var array:[UInt8] = prop.values
-        if array.count >= 16 { // プロパティマップ16バイト未満は記述形式１
-    //                        // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
-    //                        do {
-    //                            array = try ELSwift.parseMapForm2( ELSwift.bytesToString( array ) )
-    //                        }catch let error{
-    //                            print( error )
-    //                        }
+        if array.count >= 16 {
+            // プロパティマップ16バイト以上は記述形式２
             var val:UInt = 0x80
             var ret:[UInt8] = []
             // bit loop
@@ -56,7 +51,6 @@ struct NodeList: View {
                 // byte loop
                 for byt in (1..<17) {
                     if 0x01 == ((array[byt] >> bit) & 0x01) {
-                        // print("array[byt] \(array[byt]), byt \(byt), bit \(bit), val \(val)")
                         ret.append( UInt8(val) )
                     }
                     val += 1
@@ -74,31 +68,6 @@ struct NodeList: View {
             for node in nodes.values {
                 if let setProps = node.properties[0x9e] { // Setプロパティマップ
                     let array = getPropertyMap(prop: setProps)
-                    
-//                    var array:[UInt8] = setProps.values
-//                    if( array.count >= 16 ) { // プロパティマップ16バイト未満は記述形式１
-////                        // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
-////                        do {
-////                            array = try ELSwift.parseMapForm2( ELSwift.bytesToString( array ) )
-////                        }catch let error{
-////                            print( error )
-////                        }
-//                        var val:UInt = 0x80
-//                        var ret:[UInt8] = []
-//                        // bit loop
-//                        for bit:UInt8 in (0..<8) {
-//                            // byte loop
-//                            for byt in (1..<17) {
-//                                if(  0x01  ==  ((array[byt] >> bit) & 0x01)   ) {
-//                                    // print("array[byt] \(array[byt]), byt \(byt), bit \(bit), val \(val)")
-//                                    ret.append( UInt8(val) )
-//                                }
-//                                val += 1
-//                            }
-//                        }
-//                        ret.insert(UInt8(ret.count), at: 0)
-//                        array = ret
-//                    }
                     for prop in node.properties.values {
                         if array.contains(UInt8(prop.epc)) {
                             prop.settable = true
