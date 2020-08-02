@@ -12,6 +12,7 @@ import ELSwift
 struct NodeList: View {
     @EnvironmentObject var userData: UserData
     @State private var delay:Timer? = nil
+    @State private var withNodeProfile = false
 
     private func hexString(_ data: UInt8) -> String {
         return String.init(format: "%02x", data)
@@ -27,7 +28,9 @@ struct NodeList: View {
         var l:[EchonetNode] = []
         for pair in self.userData.echonetNodes.sorted(by: {$0.0 < $1.0}) {
             for subPair in pair.value.sorted(by: {$0.0 < $1.0}) {
-                l.append(subPair.value)
+                if self.withNodeProfile || subPair.value.deviceType != 0x0ef0 {
+                    l.append(subPair.value)
+                }
             }
         }
         return l
@@ -82,12 +85,21 @@ struct NodeList: View {
         NavigationView {
             VStack {
                 Spacer()
+                HStack {
+                    Spacer()
+                    Text("NodeProfile")
+                    Toggle(isOn: $withNodeProfile){
+                        Text("")
+                    }
+                    .padding(.trailing)
+                    .frame(width: 60.0)
+                }
                 List {
                     ForEach (self.extractNodes(), id:\.id) { node in
                         NavigationLink(destination: PropertyList(nodeName: EchonetDefine.nameFromDeviceType(node.deviceType), properties: self.extractProperties(node))) {
                             NodeRow(deviceType: node.deviceType, ipAddress: node.ipAddress)
                         }
-                    .navigationBarHidden(true)
+                        .navigationBarHidden(true)
                     }
                 }
                 .navigationBarTitle(Text("Echonet機器一覧").font(.title), displayMode: .inline)
