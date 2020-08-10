@@ -13,43 +13,76 @@ class PropertySub: EchonetNode.Property {
 
 class PropertySelectable1Byte: PropertySub {
     override func getValue(_ raw: Bool) -> String {
+        if values.count < 1 {
+            return super.getValue(raw)
+        }
         let key = String.init(format: "0x%02x", values[0])
         if !raw, let items = selectItems, let value = items[key] {
             return value
         } else {
-//            return super.getValue(raw)
             return key
         }
+    }
+    
+    override func convertValue(_ edt: String) -> [UInt8] {
+        return hexString2ByteArray(edt, 2, edt.count)
+    }
+    
+    override func getInputType() -> InputType {
+        return InputType.SELECTABLE
     }
 }
 
 class PropertySelectable3Byte: PropertySub {
     override func getValue(_ raw: Bool) -> String {
+        if values.count < 3 {
+            return super.getValue(raw)
+        }
         let key = String.init(format: "0x%02x%02x%02x", values[0], values[1], values[2])
         if !raw, let items = selectItems, let value = items[key] {
             return value
         } else {
-            //            return super.getValue(raw)
             return key
         }
+    }
+    
+    override func convertValue(_ edt: String) -> [UInt8] {
+        return hexString2ByteArray(edt, 2, edt.count)
+    }
+    
+    override func getInputType() -> InputType {
+        return InputType.SELECTABLE
     }
 }
 
 class PropertySelectableLocation: PropertySub {
     override func getValue(_ raw: Bool) -> String {
+        if values.count < 1 {
+            return super.getValue(raw)
+        }
         let key = String.init(format: "0x%02x", values[0] & 0x78)
         if !raw, let items = selectItems, let value = items[key] {
             return value
         } else {
-            //            return super.getValue(raw)
             return key
         }
+    }
+    
+    override func convertValue(_ edt: String) -> [UInt8] {
+        return hexString2ByteArray(edt, 2, edt.count)
+    }
+    
+    override func getInputType() -> InputType {
+        return InputType.SELECTABLE
     }
 }
 
 class PropertyInstantPower: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
             return super.getValue(raw)
         }
         let v = UInt16(values[0]) << 8 | UInt16(values[1])
@@ -62,6 +95,9 @@ class PropertyInstantCurrent: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
         let v = UInt16(values[0]) << 8 | UInt16(values[1])
 //        return String.init(format:"%4d.%dA", v / 10, v % 10)
         return String.init(format:"%5.1fA", Double(v) / 10.0)
@@ -71,6 +107,9 @@ class PropertyInstantCurrent: PropertySub {
 class PropertyInstantPowerSigned: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
             return super.getValue(raw)
         }
         let v = Int32(values[0]) << 24 | Int32(values[1]) << 16 | Int32(values[2]) << 8 | Int32(values[3])
@@ -87,6 +126,9 @@ class PropertyInstantCurrentSigned: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
         let r = Int16(values[0]) << 8 | Int16(values[1])
         let t = Int16(values[2]) << 8 | Int16(values[3])
 //        return String.init(format:"R:%4d.%dA, T:%4d.%dA", r / 10, r % 10, t / 10, t % 10)
@@ -99,15 +141,203 @@ class PropertyIntegratedPower: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
         let v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
 //        return String.init(format:"%6d.%03dW", v / 1000, v % 1000)
         return String.init(format:"%9.3fkWh", Double(v) / 1000.0)
     }
 }
 
+class PropertyInstantCurrentSignedDigit5: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = Int16(values[0]) << 8 | Int16(values[1])
+        return String.init(format:"%5.1fA", Double(v) / 10.0)
+    }
+}
+
+class PropertyInstantCurrentUnsignedDigit5: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = UInt16(values[0]) << 8 | UInt16(values[1])
+        if v <= 65533 {
+            return String.init(format:"%5.1fA", Double(v) / 10.0)
+        } else {
+            return "unknown"
+        }
+    }
+}
+
+class PropertyInstantPowerSignedDigit9: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
+        let v = Int32(values[0]) << 24 | Int32(values[1]) << 16 | Int32(values[2]) << 8 | Int32(values[3])
+        if -999999999 <= v && v <= 999999999 {
+            return String.init(format:"%9dW", v)
+        } else {
+            return "unknown"
+        }
+    }
+}
+
+class PropertyInstantPowerUnsignedDigit9: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
+        let v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
+        if v <= 999999999 {
+            return String.init(format:"%9dW", v)
+        } else {
+            return "unknown"
+        }
+    }
+}
+
+class PropertyPowerSignedDigit9: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
+        let v = Int32(values[0]) << 24 | Int32(values[1]) << 16 | Int32(values[2]) << 8 | Int32(values[3])
+        if -999999999 <= v && v <= 999999999 {
+            return String.init(format:"%9dWh", v)
+        } else {
+            return "unknown"
+        }
+    }
+}
+
+class PropertyCurrentCapacity: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = UInt16(values[0]) << 8 | UInt16(values[1])
+        return String.init(format:"%5.1fAh", Double(v) / 10.0)
+    }
+}
+
+class PropertyCurrentSignedCapacity: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = Int16(values[0]) << 8 | Int16(values[1])
+        return String.init(format:"%5.1fAh", Double(v) / 10.0)
+    }
+}
+
+class PropertyVoltage: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = UInt16(values[0]) << 8 | UInt16(values[1])
+        if v <= 32766 {
+            return String.init(format:"%5dV", v)
+        } else {
+            return "unknown"
+        }
+    }
+}
+
+class PropertyVoltageSigned: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = Int16(values[0]) << 8 | Int16(values[1])
+        if -32767 <= v && v <= 32766 {
+            return String.init(format:"%5dV", v)
+        } else {
+            return "unknown"
+        }
+    }
+}
+
+class PropertyPowerDigit9: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
+        let v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
+        return String.init(format:"%9dWh", v)
+    }
+}
+
+class PropertyPowerMinMax: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 8 {
+            return super.getValue(raw)
+        }
+        let min = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
+        let max = UInt32(values[4]) << 24 | UInt32(values[5]) << 16 | UInt32(values[6]) << 8 | UInt32(values[7])
+        return String.init(format:"Min.:%9dW, Max.:%9dW", min, max)
+    }
+}
+
+class PropertyCurrentMinMax: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
+        let min = UInt16(values[0]) << 8 | UInt16(values[1])
+        let max = UInt16(values[2]) << 8 | UInt16(values[3])
+        return String.init(format:"Min.:%5.1fA, Max.:%5.1fA", Double(min) / 10.0, Double(max) / 10.0)
+    }
+}
+
 class PropertyTemperature: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 1 {
             return super.getValue(raw)
         }
         let v = UInt(values[0])
@@ -124,6 +354,9 @@ class PropertyTemperatureSigned: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 1 {
+            return super.getValue(raw)
+        }
         let v = Int(values[0])
         if -127 <= v && v <= 125 {
             return String.init(format:"%3d℃", v)
@@ -136,6 +369,9 @@ class PropertyTemperatureSigned: PropertySub {
 class PropertyTemperatureSignedPer10: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 1 {
             return super.getValue(raw)
         }
         let v = Int(values[0])
@@ -153,6 +389,9 @@ class PropertyDay1Byte: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 1 {
+            return super.getValue(raw)
+        }
         let v = UInt(values[0])
         if v <= 0xfc {
             return String.init(format:"%3d日", v)
@@ -167,9 +406,16 @@ class PropertyHourMinute: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
         let h = UInt(values[0])
         let m = UInt(values[1])
         return String.init(format:"%02d:%02d", h, m)
+    }
+    
+    override func getInputType() -> InputType {
+        return InputType.TIME_HHMM
     }
 }
 
@@ -178,16 +424,26 @@ class PropertyYearMonthDay: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
         let y = UInt(values[0]) << 8 | UInt(values[1])
         let m = UInt(values[2])
         let d = UInt(values[3])
-        return String.init(format:"%4d/%2d/%2d", y, m, d)
+        return String.init(format:"%04d/%02d/%02d", y, m, d)
+    }
+    
+    override func getInputType() -> InputType {
+        return InputType.DATE_YYYYMMDD
     }
 }
 
 class PropertyPercent: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 1 {
             return super.getValue(raw)
         }
         let v = UInt(values[0])
@@ -200,6 +456,9 @@ class PropertyCapacity2Byte: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
         let v = UInt(values[0]) << 8 | UInt(values[1])
         return String.init(format:"%5dL", v)
     }
@@ -210,6 +469,9 @@ class PropertyCapacity1Byte: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 1 {
+            return super.getValue(raw)
+        }
         let v = UInt(values[0])
         return String.init(format:"%3dL", v)
     }
@@ -218,6 +480,9 @@ class PropertyCapacity1Byte: PropertySub {
 class PropertyTotalOperatingTime: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 5 {
             return super.getValue(raw)
         }
         let v = UInt(values[1]) << 24 | UInt(values[2]) << 16 | UInt(values[3]) << 8 | UInt(values[4])
@@ -241,6 +506,9 @@ class PropertyInteger4Byte: PropertySub {
         if raw {
             return super.getValue(raw)
         }
+        if values.count < 4 {
+            return super.getValue(raw)
+        }
         let v = UInt(values[0]) << 24 | UInt(values[1]) << 16 | UInt(values[2]) << 8 | UInt(values[3])
         return String.init(format:"%6d", v)
     }
@@ -253,6 +521,9 @@ class PropertyEnergy4Byte: PropertySub {
     
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 4 {
             return super.getValue(raw)
         }
         var v = UInt32(values[0]) << 24 | UInt32(values[1]) << 16 | UInt32(values[2]) << 8 | UInt32(values[3])
@@ -289,6 +560,9 @@ class PropertyEnergyInterval: PropertySub {
     
     override func getValue(_ raw: Bool) -> String {
         if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 11 {
             return super.getValue(raw)
         }
         let y = UInt(values[0]) << 8 | UInt(values[1])

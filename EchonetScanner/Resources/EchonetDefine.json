@@ -122,7 +122,7 @@
         "0x028a": { "name": "高圧スマート電力量メータ", },
         "0x028b": { "name": "灯油メータ", },
         "0x028c": { "name": "スマート灯油メータ", "icon_name": "gauge" },
-        "0x0290": { "name": "一般照明", },
+        "0x0290": { "name": "一般照明", "icon_name": "lightbulb" },
         "0x0291": { "name": "単機能照明", },
         "0x0299": { "name": "非常照明", },
         "0x029d": { "name": "設備照明", },
@@ -185,6 +185,312 @@
         "0x0ef0": { "name": "ノードプロファイル", "icon_name": "n.circle" }
     },
     "properties": {
+        "0x0279": {
+
+        },
+        "0x027d": {
+            "0xa0": {
+                "name": "AC実効容量(充電)",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xa1": {
+                "name": "AC実効容量(放電)",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xa2": {
+                "name": "AC充電可能容量",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xa3": {
+                "name": "AC放電可能容量",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xa4": {
+                "name": "AC充電可能量",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xa5": {
+                "name": "AC放電可能量",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xa6": {
+                "name": "AC充電上限設定",
+                "type": "value",
+                "class_name" : "PropertyPercent"
+            },
+            "0xa7": {
+                "name": "AC放電下限設定",
+                "type": "value",
+                "class_name" : "PropertyPercent"
+            },
+            "0xa8": {
+                "name": "AC積算充電電力量計測値",
+                "type": "value",
+                "class_name" : "PropertyIntegratedPower"
+            },
+            "0xa9": {
+                "name": "AC積算放電電力量計測値",
+                "type": "value",
+                "class_name" : "PropertyIntegratedPower"
+            },
+            "0xaa": {
+                "name": "AC充電量設定値",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xab": {
+                "name": "AC放電量設定値",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xc7": {
+                "name": "AC定格電力量",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xc8": {
+                "name": "最小最大充電電力値",
+                "type": "value",
+                "class_name" : "PropertyPowerMinMax"
+            },
+            "0xc9": {
+                "name": "最小最大放電電力値",
+                "type": "value",
+                "class_name" : "PropertyPowerMinMax"
+            },
+            "0xca": {
+                "name": "最小最大充電電流値",
+                "type": "value",
+                "class_name" : "PropertyCurrentMinMax"
+            },
+            "0xcb": {
+                "name": "最小最大放電電流値",
+                "type": "value",
+                "class_name" : "PropertyCurrentMinMax"
+            },
+            "0xcc": {
+                "name": "再連系許可設定",
+                "type": "select",
+                "select_items": {
+                    "0x41": "許可",
+                    "0x42": "禁止",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xcd": {
+                "name": "運転許可設定",
+                "type": "select",
+                "select_items": {
+                    "0x41": "許可",
+                    "0x42": "禁止",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xce": {
+                "name": "自立運転許可設定",
+                "type": "select",
+                "select_items": {
+                    "0x41": "許可",
+                    "0x42": "禁止",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xcf": {
+                "name": "運転動作状態",
+                "type": "select",
+                "select_items": {
+                    "0x41": "急速充電",
+                    "0x42": "充電",
+                    "0x43": "放電",
+                    "0x44": "待機",
+                    "0x45": "テスト",
+                    "0x46": "自動",
+                    "0x48": "再起動",
+                    "0x49": "実効容量再計算処理",
+                    "0x40": "その他",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xd0": {
+                "name": "定格電力量",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xd1": {
+                "name": "定格容量",
+                "type": "value",
+                "class_name" : "PropertyCurrentCapacity"
+            },
+            "0xd2": {
+                "name": "定格電圧",
+                "type": "value",
+                "class_name" : "PropertyVoltage"
+            },
+            "0xd3": {
+                "name": "瞬時充放電電力計測値",
+                "type": "value",
+                "class_name" : "PropertyInstantPowerSignedDigit9"
+            },
+            "0xd4": {
+                "name": "瞬時充放電電流計測値",
+                "type": "value",
+                "class_name" : "PropertyInstantCurrentSignedDigit5"
+            },
+            "0xd5": {
+                "name": "瞬時充放電電圧計測値",
+                "type": "value",
+                "class_name" : "PropertyVoltageSigned"
+            },
+            "0xd6": {
+                "name": "積算放電電力量計測値",
+                "type": "value",
+                "class_name" : "PropertyIntegratedPower"
+            },
+            "0xd7": {
+                "name": "積算放電電力量リセット設定",
+                "type": "value",
+            },
+            "0xd8": {
+                "name": "積算充電電力量計測値",
+                "type": "value",
+                "class_name" : "PropertyIntegratedPower"
+            },
+            "0xd9": {
+                "name": "積算充電電力量リセット設定",
+                "type": "value",
+            },
+            "0xda": {
+                "name": "運転モード設定",
+                "type": "select",
+                "select_items": {
+                    "0x41": "急速充電",
+                    "0x42": "充電",
+                    "0x43": "放電",
+                    "0x44": "待機",
+                    "0x45": "テスト",
+                    "0x46": "自動",
+                    "0x48": "再起動",
+                    "0x49": "実効容量再計算処理",
+                    "0x40": "その他",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xdb": {
+                "name": "系統連系状態",
+                "type": "select",
+                "select_items": {
+                    "0x00": "系統連系(逆潮流可)",
+                    "0x01": "独立",
+                    "0x02": "系統連系(逆潮流不可)",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xdc": {
+                "name": "最小最大充電電力値(独立時)",
+                "type": "value",
+                "class_name" : "PropertyPowerMinMax"
+            },
+            "0xdd": {
+                "name": "最小最大放電電力値(独立時)",
+                "type": "value",
+                "class_name" : "PropertyPowerMinMax"
+            },
+            "0xde": {
+                "name": "最小最大充電電流値(独立時)",
+                "type": "value",
+                "class_name" : "PropertyCurrentMinMax"
+            },
+            "0xdf": {
+                "name": "最小最大放電電流値(独立時)",
+                "type": "value",
+                "class_name" : "PropertyCurrentMinMax"
+            },
+            "0xe0": {
+                "name": "充放電量設定値1",
+                "type": "value",
+                "class_name" : "PropertyPowerSignedDigit9"
+            },
+            "0xe1": {
+                "name": "充放電量設定値2",
+                "type": "value",
+                "class_name" : "PropertyCurrentSignedCapacity"
+            },
+            "0xe2": {
+                "name": "蓄電残量1",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xe3": {
+                "name": "蓄電残量2",
+                "type": "value",
+                "class_name" : "PropertyCurrentCapacity"
+            },
+            "0xe4": {
+                "name": "蓄電残量3",
+                "type": "value",
+                "class_name" : "PropertyPercent"
+            },
+            "0xe5": {
+                "name": "劣化状態",
+                "type": "value",
+                "class_name" : "PropertyPercent"
+            },
+            "0xe6": {
+                "name": "蓄電池タイプ",
+                "type": "value",
+            },
+            "0xe7": {
+                "name": "充電量設定値1",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xe8": {
+                "name": "放電量設定値1",
+                "type": "value",
+                "class_name" : "PropertyPowerDigit9"
+            },
+            "0xe9": {
+                "name": "充電量設定値2",
+                "type": "value",
+                "class_name" : "PropertyCurrentCapacity"
+            },
+            "0xea": {
+                "name": "放電量設定値2",
+                "type": "value",
+                "class_name" : "PropertyCurrentCapacity"
+            },
+            "0xeb": {
+                "name": "充電電力設定値",
+                "type": "value",
+                "class_name" : "PropertyInstantPowerUnsignedDigit9"
+            },
+            "0xec": {
+                "name": "放電電力設定値",
+                "type": "value",
+                "class_name" : "PropertyInstantPowerUnsignedDigit9"
+            },
+            "0xed": {
+                "name": "充電電流設定値",
+                "type": "value",
+                "class_name" : "PropertyInstantCurrentUnsignedDigit5"
+            },
+            "0xee": {
+                "name": "放電電流設定値",
+                "type": "value",
+                "class_name" : "PropertyInstantCurrentUnsignedDigit5"
+            },
+            "0xef": {
+                "name": "定格電圧(独立時)",
+                "type": "value",
+                "class_name" : "PropertyVoltage"
+            }
+        },
         "0x026b": {
             "0x90": {
                 "name": "ONタイマ予約設定",

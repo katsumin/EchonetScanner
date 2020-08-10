@@ -96,7 +96,7 @@ struct NodeList: View {
                 }
                 List {
                     ForEach (self.extractNodes(), id:\.id) { node in
-                        NavigationLink(destination: PropertyList(nodeName: EchonetDefine.nameFromDeviceType(node.deviceType), properties: self.extractProperties(node))) {
+                        NavigationLink(destination: PropertyList(node: node)) {
                             NodeRow(deviceType: node.deviceType, ipAddress: node.ipAddress)
                         }
                         .navigationBarHidden(true)
@@ -128,9 +128,10 @@ struct NodeList: View {
                         let seoj = elsv.SEOJ
                         let esv = elsv.ESV
                         let detail = elsv.DETAIL
-                        if esv == ELSwift.GET_RES || esv == ELSwift.INF {
+                        print("ip:\(rinfo.address), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), datail:\(self.hexString(detail))")
+                        if esv == ELSwift.GET_RES || esv == ELSwift.SET_RES || esv == ELSwift.INF {
                             let opc = Int(elsv.OPC)
-                            print("ip:\(rinfo.address), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), opc:\(opc), datail:\(self.hexString(detail))")
+                            print(" -> opc:\(opc)")
                             for prop in EchonetNode.Property.parse(detail, opc, rinfo.address, seoj) {
                                 var nodesAtAddr = self.userData.echonetNodes[rinfo.address]
                                 if nodesAtAddr == nil {

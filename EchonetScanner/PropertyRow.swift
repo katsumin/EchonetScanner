@@ -15,12 +15,6 @@ struct PropertyRow: View {
 
     var body: some View {
         HStack {
-//            Button(action: {
-//                self.star.toggle()
-//                print("star button")
-//            }) {
-//                Image(systemName: self.star ?"star.fill" :"star")
-//            }
             Image(systemName: "p.circle")
                 .padding(.horizontal)
                 .frame(width: 30.0)
@@ -53,12 +47,14 @@ struct PropertyRow: View {
 private let props = [
     EchonetNode.Property(0x80, true, true, "192.168.1.120", [0x01,0x30,0x01], Array("0".utf8), [:]),
     EchonetNode.Property(0x8a, true, false, "192.168.1.120", [0x01,0x30,0x01], Array("value_8a".utf8), [:]),
+    EchonetNode.Property(0xb6, true, false, "192.168.1.15", [0x02,0x90,0x01], Array("value_b6".utf8), nil),
 ]
 struct PropertyRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             PropertyRow(property: props[0], isRaw: false)
             PropertyRow(property: props[1], isRaw: false)
+            PropertyRow(property: props[2], isRaw: false)
         }
         .previewLayout(.fixed(width: 300, height: 70))
     }

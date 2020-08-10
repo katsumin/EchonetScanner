@@ -12,6 +12,7 @@ import ELSwift
 struct ContentView: View {
     @State private var isRaw = false
     @State private var edt = ""
+    @State private var time = Date()
     var property: EchonetNode.Property
     
     private func captionColor(_ enable: Bool) -> Color {
@@ -37,21 +38,22 @@ struct ContentView: View {
         return selectItems
     }
     
+    func rawPropertyView( _ prop: EchonetNode.Property) -> some View {
+        Form {
+            Text("EDT")
+                .font(.title)
+                .padding(.leading, 5.0)
+                .frame(width: 60.0)
+            TextField(property.getValue(isRaw), text: $edt)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .font(.title)
+                .padding(.trailing, 5.0)
+        }
+    }
+    
     func propertyView(_ prop: EchonetNode.Property, _ selectItems: [(String,String)]) -> some View {
         HStack {
-            if prop.isSelectable() {
-//                Spacer()
-//                Picker(selection: $edt, label:Text("EDT")
-////                    .font(.title)
-//                ) {
-//                    ForEach(selectItems, id:\.0) { item in
-//                        Text(item.1).multilineTextAlignment(.center).tag(item.0)
-//                    }
-//                }
-////                .padding(.horizontal, 0.0)
-////                .pickerStyle(SegmentedPickerStyle())
-////                .pickerStyle(WheelPickerStyle())
-//                Spacer()
+            if prop.getInputType() == EchonetNode.Property.InputType.SELECTABLE {
                 NavigationView {
                     Form {
                         Picker(selection: $edt, label:Text("EDT").font(.title)) {
@@ -61,15 +63,41 @@ struct ContentView: View {
                         }
                     }
                 }
+            } else if prop.getInputType() == EchonetNode.Property.InputType.TIME_HHMM {
+                if self.isRaw {
+                    rawPropertyView(prop)
+                } else {
+                    Form {
+                        DatePicker("EDT", selection: $time, displayedComponents: .hourAndMinute)
+                        .onReceive([self.time].publisher.first()) { value in
+                            let calendar = Calendar.current
+                            let hour = calendar.component(.hour, from: value)
+                            let min = calendar.component(.minute, from: value)
+                            self.edt = String.init(format:"%02x%02x", hour, min)
+                            print("\(hour)時\(min)分 -> \(self.edt)")
+                        }
+                    }
+                }
+            } else if prop.getInputType() == EchonetNode.Property.InputType.DATE_YYYYMMDD {
+                if self.isRaw {
+                    rawPropertyView(prop)
+                } else {
+                    Form {
+                        DatePicker("EDT", selection: $time, displayedComponents: .date)
+                        .onReceive([self.time].publisher.first()) { value in
+                            let calendar = Calendar.current
+                            let year = calendar.component(.year, from: value)
+                            let month = calendar.component(.month, from: value)
+                            let day = calendar.component(.day, from: value)
+                            self.edt = String.init(format:"%04x%02x%02x", year, month, day)
+                            print("\(year)年\(month)月\(day)日 -> \(self.edt)")
+                        }
+                    }
+                }
+            } else if prop.getInputType() == EchonetNode.Property.InputType.DEFAULT {
+                rawPropertyView(prop)
             } else {
-                Text("EDT")
-                    .font(.title)
-                    .padding(.leading, 5.0)
-                    .frame(width: 60.0)
-                TextField(property.getValue(isRaw), text: $edt)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .font(.title)
-                    .padding(.trailing, 5.0)
+                rawPropertyView(prop)
             }
         }
         .padding([.top, .leading, .trailing], 0.0)
@@ -131,7 +159,14 @@ struct ContentView: View {
                 .cornerRadius(10.0)
                 Spacer()
                 Button(action: {
-                    print("tapped")
+                    print(self.edt)
+                    print(self.property.values)
+                    do {
+                        let v:[UInt8] = self.property.convertValue(self.edt)
+                        try ELSwift.sendOPC1(self.property.ipAddress, [0x0e,0xf0,0x01], self.property.eoj, UInt8(ELSwift.SETC), UInt8(self.property.epc), v)
+                    } catch let error {
+                        print(error)
+                    }
                 }){
                     VStack {
                         Image(systemName: "square.and.arrow.up")
@@ -154,8 +189,22 @@ struct ContentView: View {
         }
         .padding(.top, 0.0)
         .onAppear(){
-            if self.property.isSelectable() {
+            if self.property.getInputType() == EchonetNode.Property.InputType.SELECTABLE {
                 self.edt = self.property.getValue(true)
+            } else if self.property.getInputType() == EchonetNode.Property.InputType.TIME_HHMM {
+                let formatter: DateFormatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                let strTime = self.property.getValue(false)
+                if let d = formatter.date(from: strTime) {
+                    self.time = d
+                }
+            } else if self.property.getInputType() == EchonetNode.Property.InputType.DATE_YYYYMMDD {
+                let formatter: DateFormatter = DateFormatter()
+                formatter.dateFormat = "yyyy/MM/dd"
+                let strTime = self.property.getValue(false)
+                if let d = formatter.date(from: strTime) {
+                    self.time = d
+                }
             }
         }
     }
@@ -166,10 +215,12 @@ private let props = [
     PropertySelectable1Byte(0x80, true, true, "192.168.1.120", [0x01,0x30,0x01], [0x30],
         ["0x30": "ON", "0x31": "OFF"]),
     EchonetNode.Property(0x8a, true, false, "192.168.1.120", [0x01,0x30,0x01], Array("value8a".utf8), [:]),
+    PropertyHourMinute(0x91, true, true, "192.168.1.120", [0x01, 0x30, 0x01], [0x08, 0x00], nil),
+    PropertyYearMonthDay(0x98, true, true, "192.168.1.120", [0x01, 0x30, 0x01], [0x07, 0xe4, 0x08, 0x0b], nil),
 ]
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(property: props[0])
+        ContentView(property: props[3])
     }
 }
 #endif
