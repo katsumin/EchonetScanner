@@ -384,6 +384,44 @@ class PropertyTemperatureSignedPer10: PropertySub {
     }
 }
 
+class PropertyTemperatureSigned2byte: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = Int(values[0]) << 8 | Int(values[1])
+        if v > 32766 {
+            return "over flow"
+        } else if v >= -2732 {
+            return String.init(format:"%6.1f℃", Double(v) / 10.0)
+        } else {
+            return "under flow"
+        }
+    }
+}
+
+class PropertyPressureUnsigned2byte: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = UInt(values[0]) << 8 | UInt(values[1])
+        if v == 65535 {
+            return "over flow"
+        } else if v == 65534 {
+            return "under flow"
+        } else {
+            return String.init(format:"%6.1fhPa", Double(v) / 10.0)
+        }
+    }
+}
+
 class PropertyDay1Byte: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {
@@ -447,7 +485,7 @@ class PropertyPercent: PropertySub {
             return super.getValue(raw)
         }
         let v = UInt(values[0])
-        return String.init(format:"%3d%", v)
+        return String.init(format:"%3d%%", v)
     }
 }
 

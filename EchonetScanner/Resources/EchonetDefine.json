@@ -185,8 +185,30 @@
         "0x0ef0": { "name": "ノードプロファイル", "icon_name": "n.circle" }
     },
     "properties": {
+        "0x0011": {
+            "0xe0": {
+                "name": "温度計測値",
+                "type": "value",
+                "class_name" : "PropertyTemperatureSigned2byte"
+            }
+        },
+        "0x0012": {
+            "0xe0": {
+                "name": "相対湿度計測値",
+                "type": "value",
+                "class_name" : "PropertyPercent"
+            }
+        },
+        "0x002d": {
+            "0xe0": {
+                "name": "気圧計測値",
+                "type": "value",
+                "class_name" : "PropertyPressureUnsigned2byte"
+            }
+        },
+        "0x0290": {
+        },
         "0x0279": {
-
         },
         "0x027d": {
             "0xa0": {
