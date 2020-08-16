@@ -10,20 +10,22 @@
 //import CoreLocation
 import Foundation
 
-var echonetNodeDatas: [String:[String:EchonetNode]] = [:]
+var echonetNodeDatas: [Int:[String:EchonetNode]] = [:]
 
 struct EchonetNode {
     var id:String
     var deviceType: Int
     var ipAddress: String
+    var eoj: [UInt8]
     // プロパティリスト
     var properties:[Int:Property]
     
-    init(deviceType:Int, ipAddress:String, properties:[Int:Property]) {
+    init(deviceType:Int, ipAddress:String, properties:[Int:Property], eoj:[UInt8]) {
         self.deviceType = deviceType
         self.ipAddress = ipAddress
         self.id = ipAddress + String(deviceType, radix: 16)
         self.properties = properties
+        self.eoj = eoj
     }
 
     mutating func appendProperty(_ prop: Property) -> Void {
@@ -133,7 +135,7 @@ struct EchonetNode {
     
     static func create(_ ipAddress:String, _ seoj:[UInt8], _ detail:[UInt8]) -> EchonetNode {
         let deviceType = Int(seoj[0]) << 8 | Int(seoj[1])
-        return EchonetNode(deviceType: deviceType, ipAddress: ipAddress, properties: [:])
+        return EchonetNode(deviceType: deviceType, ipAddress: ipAddress, properties: [:], eoj:seoj)
     }
     
     static func clear() -> Void {

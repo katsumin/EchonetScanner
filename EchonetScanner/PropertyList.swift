@@ -23,10 +23,6 @@ struct PropertyList: View {
     }
     
     private func regetProperty(_ node:EchonetNode, _ epc:UInt8, _ deoj:[UInt8]) {
-        if epc == 0x9f {
-            // このとき9fをまた取りに行くと無限ループなのでやめる
-            return
-        }
         if let p = self.node.properties[Int(epc)] {
 //            print(p)
             // 取得済みのプロパティはスキップ
@@ -81,11 +77,17 @@ struct PropertyList: View {
                                     }
                                     let num = array[0]
                                     for i:UInt8 in (0..<num ) {
-                                        self.regetProperty(self.node, array[ Int(i+1) ], propMapGet.eoj)
+                                        let epc = array[Int(i+1)]
+                                        if epc != 0x9f {
+                                            // このとき9fをまた取りに行くと無限ループなのでやめる
+                                            self.regetProperty(self.node, epc, propMapGet.eoj)
+                                        }
                                     }
                                 } catch let error {
                                     print(error)
                                 }
+                            } else {
+                                self.regetProperty(self.node, 0x9f, self.node.eoj)
                             }
                         }){
                             Image(systemName: "arrow.clockwise")
@@ -103,7 +105,7 @@ private var node = EchonetNode(deviceType: 0x0130, ipAddress: "192.168.1.120", p
     0x80: PropertySelectable1Byte(0x80, true, true, "192.168.1.120", [0x01,0x30,0x01], [0x30],["0x30": "ON", "0x31": "OFF"]),
     0x84: PropertyInstantPower(0x84, true, false, "192.168.1.120", [0x01,0x30,0x01], [0x00, 0x64], [:]),
     0xb0: EchonetNode.Property(0xb0, true, false, "192.168.1.120", [0x01,0x30,0x01], Array("vb0".utf8), [:]),
-])
+], eoj: [0x01,0x30,0x01])
 struct PropertyList_Previews: PreviewProvider {
     static var previews: some View {
         PropertyList(node: node)

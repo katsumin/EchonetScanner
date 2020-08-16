@@ -80,6 +80,14 @@ struct NodeList: View {
             }
         }
     }
+    private func toInt(_ ipAddrStr:String) -> Int {
+        var i = 0
+        let bytes = ipAddrStr.split(separator: ".")
+        for b in bytes {
+            i = i * 256 + Int(b)!
+        }
+        return i
+    }
 
     var body: some View {
         NavigationView {
@@ -128,23 +136,25 @@ struct NodeList: View {
                         let seoj = elsv.SEOJ
                         let esv = elsv.ESV
                         let detail = elsv.DETAIL
-                        print("ip:\(rinfo.address), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), datail:\(self.hexString(detail))")
+                        let addr = rinfo.address
+                        let key = self.toInt(addr)
+                        print("key: \(key), ip:\(addr), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), datail:\(self.hexString(detail))")
                         if esv == ELSwift.GET_RES || esv == ELSwift.SET_RES || esv == ELSwift.INF {
                             let opc = Int(elsv.OPC)
                             print(" -> opc:\(opc)")
-                            for prop in EchonetNode.Property.parse(detail, opc, rinfo.address, seoj) {
-                                var nodesAtAddr = self.userData.echonetNodes[rinfo.address]
+                            for prop in EchonetNode.Property.parse(detail, opc, addr, seoj) {
+                                var nodesAtAddr = self.userData.echonetNodes[key]
                                 if nodesAtAddr == nil {
                                     nodesAtAddr = [:]
                                 }
-                                self.userData.echonetNodes.updateValue(nodesAtAddr!, forKey: rinfo.address)
+                                self.userData.echonetNodes.updateValue(nodesAtAddr!, forKey: key)
                                 let deviceType = prop.getDeviceType()
                                 var node = nodesAtAddr![deviceType]
                                 if node == nil {
-                                    node = EchonetNode.create(rinfo.address, seoj, detail)
+                                    node = EchonetNode.create(addr, seoj, detail)
                                 }
                                 node!.appendProperty(prop)
-                                self.userData.echonetNodes[rinfo.address]!.updateValue(node!, forKey: deviceType)
+                                self.userData.echonetNodes[key]!.updateValue(node!, forKey: deviceType)
                             }
                         }
                     }

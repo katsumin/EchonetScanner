@@ -62,7 +62,7 @@ struct EchonetDefine :Decodable {
         if let device = echonetDefine.device_types[deviceTypeToString(deviceType)], let icon = device.icon_name {
             return icon
         }
-        return "star"
+        return "d.circle"
     }
     
     static func iconRotateFromDevieType(_ deviceType: Int) -> Double {
