@@ -342,7 +342,7 @@ class PropertyTemperature: PropertySub {
         }
         let v = UInt(values[0])
         if v == 0xfd {
-            return "unknown"
+            return "計測不可"
         } else {
             return String.init(format:"%3d℃", v)
         }
@@ -360,8 +360,12 @@ class PropertyTemperatureSigned: PropertySub {
         let v = Int(values[0])
         if -127 <= v && v <= 125 {
             return String.init(format:"%3d℃", v)
+        } else if v == -128 {
+            return "under flow"
+        } else if v == 127 {
+            return "over flow"
         } else {
-            return "unknown"
+            return "計測不可"
         }
     }
 }
@@ -378,8 +382,12 @@ class PropertyTemperatureSignedPer10: PropertySub {
         if -127 <= v && v <= 125 {
 //            return String.init(format:"%2d.%d℃", v / 10, v % 10)
             return String.init(format:"%3.1f℃", Double(v) / 10.0)
+        } else if v == -128 {
+            return "under flow"
+        } else if v == 127 {
+            return "over flow"
         } else {
-            return "unknown"
+            return "計測不可"
         }
     }
 }
@@ -485,6 +493,13 @@ class PropertyPercent: PropertySub {
             return super.getValue(raw)
         }
         let v = UInt(values[0])
+        if v == 0xfd {
+            return "計測不可"
+        } else if v == 0xfe {
+            return "under flow"
+        } else if v == 0xff {
+            return "over flow"
+        }
         return String.init(format:"%3d%%", v)
     }
 }
