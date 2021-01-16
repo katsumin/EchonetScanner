@@ -10,7 +10,7 @@
 //import CoreLocation
 import Foundation
 
-var echonetNodeDatas: [Int:[String:EchonetNode]] = [:]
+var echonetNodeDatas: [UInt32:[String:EchonetNode]] = [:]
 
 struct EchonetNode {
     var id:String

@@ -13,6 +13,8 @@ struct NodeList: View {
     @EnvironmentObject var userData: UserData
     @State private var delay:Timer? = nil
     @State private var withNodeProfile = false
+    @State private var searchingIp = ""
+    @State private var scanning = false
 
     private func hexString(_ data: UInt8) -> String {
         return String.init(format: "%02x", data)
@@ -72,7 +74,7 @@ struct NodeList: View {
                 if let setProps = node.properties[0x9e] { // Setプロパティマップ
                     let array = getPropertyMap(prop: setProps)
                     for prop in node.properties.values {
-                        if array.contains(UInt8(prop.epc)) {
+                        if array.contains(UInt8(prop.epc)) && prop.selectItems != nil && !prop.selectItems!.isEmpty {
                             prop.settable = true
                         }
                     }
@@ -80,13 +82,31 @@ struct NodeList: View {
             }
         }
     }
-    private func toInt(_ ipAddrStr:String) -> Int {
-        var i = 0
-        let bytes = ipAddrStr.split(separator: ".")
-        for b in bytes {
-            i = i * 256 + Int(b)!
+    private func search() -> Void {
+        // すべてノードに対して，すべてのEOJをGetする
+        DispatchQueue.global(qos: .background).async {
+            scanning = true
+            do {
+//            try ELSwift.sendOPC1( ELSwift.EL_Multi, [0x0e,0xf0, 0x01], [0x0e, 0xf0, 0x01], 0x62, 0xD6, [0x00] )
+                for addr in NetworkInfo.getIpAddresses() {
+                    let key = NetworkInfo.toInt(addr)
+                    let nodesAtAddr = self.userData.echonetNodes[key]
+                    if nodesAtAddr == nil || (nodesAtAddr!.count < 2 && nodesAtAddr!["0x0ef0"] != nil) {
+                        try ELSwift.sendOPC1( addr, [0x0e,0xf0, 0x01], [0x0e, 0xf0, 0x01], 0x62, 0xD6, [0x00] )
+                        print(addr)
+                        searchingIp = addr
+                        Thread.sleep(forTimeInterval: 0.05)
+                    } else {
+                        print("skip: \(addr)")
+                    }
+                }
+                searchingIp = ""
+            } catch let error {
+                print("Error: ELSwift.search.")
+                print(error)
+            }
+            scanning = false
         }
-        return i
     }
 
     var body: some View {
@@ -94,6 +114,7 @@ struct NodeList: View {
             VStack {
                 Spacer()
                 HStack {
+                    Text(searchingIp)
                     Spacer()
                     Text("NodeProfile")
                     Toggle(isOn: $withNodeProfile){
@@ -107,19 +128,23 @@ struct NodeList: View {
                         NavigationLink(destination: PropertyList(node: node)) {
                             NodeRow(deviceType: node.deviceType, ipAddress: node.ipAddress)
                         }
-                        .navigationBarHidden(true)
+//                        .navigationBarHidden(true)
                     }
                 }
-                .navigationBarTitle(Text("Echonet機器一覧").font(.title), displayMode: .inline)
+                .navigationBarTitle(Text("Echonet Lite 機器一覧"), displayMode: .inline)
                 .navigationBarItems(trailing:
                     HStack {
                         Spacer()
-                        Button(action: {
-                            ELSwift.search()
-                        }){
-                            Image(systemName: "arrow.clockwise")
+                        ZStack{
+                            LoadingIndicatorView(isLoading: scanning)
+                            Button(action: {
+                                self.search()
+                            }){
+                                Image(systemName: "arrow.clockwise")
+                            }
+                            .padding(.trailing)
+                            .disabled(scanning)
                         }
-                        .padding(.trailing)
                     }
                 )
             }
@@ -137,7 +162,7 @@ struct NodeList: View {
                         let esv = elsv.ESV
                         let detail = elsv.DETAIL
                         let addr = rinfo.address
-                        let key = self.toInt(addr)
+                        let key = NetworkInfo.toInt(addr)
                         print("key: \(key), ip:\(addr), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), datail:\(self.hexString(detail))")
                         if esv == ELSwift.GET_RES || esv == ELSwift.SET_RES || esv == ELSwift.INF {
                             let opc = Int(elsv.OPC)

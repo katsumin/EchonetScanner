@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03A2AA36BE06406CB2EDB2A6 /* Pods_EchonetScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C528E6DF2AD58A0504C65C5 /* Pods_EchonetScanner.framework */; };
 		35692E3206A8BA1EE042D417 /* Pods_EchonetScannerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1913A45BBC2AA1FB109F87 /* Pods_EchonetScannerTests.framework */; };
 		E9E102151E0337880AE23A33 /* Pods_EchonetScanner_EchonetScannerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C3D8A51E0421C94DAA021B1 /* Pods_EchonetScanner_EchonetScannerUITests.framework */; };
-		F110C17EA0122C0007C87564 /* Pods_EchonetScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C528E6DF2AD58A0504C65C5 /* Pods_EchonetScanner.framework */; };
+		F20C3B4725ABE6E4002E650A /* NetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20C3B4625ABE6E4002E650A /* NetworkInfo.swift */; };
 		F25BB298246ABBFA00CA89FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB297246ABBFA00CA89FF /* AppDelegate.swift */; };
 		F25BB29A246ABBFA00CA89FF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB299246ABBFA00CA89FF /* SceneDelegate.swift */; };
 		F25BB29C246ABBFA00CA89FF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB29B246ABBFA00CA89FF /* ContentView.swift */; };
@@ -22,6 +23,7 @@
 		F25BB2CC246ACAAE00CA89FF /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2CB246ACAAE00CA89FF /* Data.swift */; };
 		F25BB2CE246ACB1000CA89FF /* EchonetNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BB2CD246ACB1000CA89FF /* EchonetNode.swift */; };
 		F25BB2D2246ACCD900CA89FF /* EchonetDefine.json in Resources */ = {isa = PBXBuildFile; fileRef = F25BB2D1246ACCD900CA89FF /* EchonetDefine.json */; };
+		F2848F7225B1D7F400E1C7BC /* Inidicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2848F7125B1D7F400E1C7BC /* Inidicator.swift */; };
 		F2C073D4246C37A90087255B /* PropertyRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D3246C37A90087255B /* PropertyRow.swift */; };
 		F2C073D6246CDB210087255B /* PropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D5246CDB210087255B /* PropertyList.swift */; };
 		F2C073D8246D04460087255B /* NodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C073D7246D04460087255B /* NodeRow.swift */; };
@@ -56,6 +58,8 @@
 		AFE53BF1B32875EBBCC3CFBB /* Pods-EchonetScannerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScannerTests.release.xcconfig"; path = "Target Support Files/Pods-EchonetScannerTests/Pods-EchonetScannerTests.release.xcconfig"; sourceTree = "<group>"; };
 		DD056B1657F5A40DB1C100C0 /* Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig"; path = "Target Support Files/Pods-EchonetScanner-EchonetScannerUITests/Pods-EchonetScanner-EchonetScannerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EA1913A45BBC2AA1FB109F87 /* Pods_EchonetScannerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EchonetScannerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20C3B4125AA8009002E650A /* EchonetScanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EchonetScanner.entitlements; sourceTree = "<group>"; };
+		F20C3B4625ABE6E4002E650A /* NetworkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInfo.swift; sourceTree = "<group>"; };
 		F25BB294246ABBFA00CA89FF /* EchonetScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EchonetScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F25BB297246ABBFA00CA89FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F25BB299246ABBFA00CA89FF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +78,7 @@
 		F25BB2CB246ACAAE00CA89FF /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		F25BB2CD246ACB1000CA89FF /* EchonetNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchonetNode.swift; sourceTree = "<group>"; };
 		F25BB2D1246ACCD900CA89FF /* EchonetDefine.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = EchonetDefine.json; sourceTree = "<group>"; };
+		F2848F7125B1D7F400E1C7BC /* Inidicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inidicator.swift; sourceTree = "<group>"; };
 		F2C073D3246C37A90087255B /* PropertyRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyRow.swift; sourceTree = "<group>"; };
 		F2C073D5246CDB210087255B /* PropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyList.swift; sourceTree = "<group>"; };
 		F2C073D7246D04460087255B /* NodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeRow.swift; sourceTree = "<group>"; };
@@ -86,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F110C17EA0122C0007C87564 /* Pods_EchonetScanner.framework in Frameworks */,
+				03A2AA36BE06406CB2EDB2A6 /* Pods_EchonetScanner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +124,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F20C3B4525ABE6B3002E650A /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				F20C3B4625ABE6E4002E650A /* NetworkInfo.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		F25BB28B246ABBFA00CA89FF = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +157,8 @@
 		F25BB296246ABBFA00CA89FF /* EchonetScanner */ = {
 			isa = PBXGroup;
 			children = (
+				F20C3B4525ABE6B3002E650A /* Utility */,
+				F20C3B4125AA8009002E650A /* EchonetScanner.entitlements */,
 				F25BB2CA246AC9E600CA89FF /* Resources */,
 				F25BB2C7246AC41F00CA89FF /* Models */,
 				F25BB297246ABBFA00CA89FF /* AppDelegate.swift */,
@@ -157,6 +172,7 @@
 				F2C073D5246CDB210087255B /* PropertyList.swift */,
 				F2C073D7246D04460087255B /* NodeRow.swift */,
 				F2C073D9246D120A0087255B /* NodeList.swift */,
+				F2848F7125B1D7F400E1C7BC /* Inidicator.swift */,
 			);
 			path = EchonetScanner;
 			sourceTree = "<group>";
@@ -490,9 +506,11 @@
 				F25BB2CE246ACB1000CA89FF /* EchonetNode.swift in Sources */,
 				F25BB29A246ABBFA00CA89FF /* SceneDelegate.swift in Sources */,
 				F2C073D4246C37A90087255B /* PropertyRow.swift in Sources */,
+				F2848F7225B1D7F400E1C7BC /* Inidicator.swift in Sources */,
 				F25BB2C9246AC44100CA89FF /* UserData.swift in Sources */,
 				F2C073DA246D120A0087255B /* NodeList.swift in Sources */,
 				F2C073D6246CDB210087255B /* PropertyList.swift in Sources */,
+				F20C3B4725ABE6E4002E650A /* NetworkInfo.swift in Sources */,
 				F25BB29C246ABBFA00CA89FF /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,7 +677,10 @@
 			baseConfigurationReference = 5B0113BD7A76FDFA68F97BDC /* Pods-EchonetScanner.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = EchonetScanner/EchonetScanner.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"EchonetScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = A6J84MTW93;
 				ENABLE_PREVIEWS = YES;
@@ -668,8 +689,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = work.windesign.EchonetScanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = EchonetScanner_dev_multi;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -680,7 +703,10 @@
 			baseConfigurationReference = 7FD2E84A8B74D9E0DEF3B43C /* Pods-EchonetScanner.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = EchonetScanner/EchonetScanner.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"EchonetScanner/Preview Content\"";
 				DEVELOPMENT_TEAM = A6J84MTW93;
 				ENABLE_PREVIEWS = YES;
@@ -689,8 +715,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = work.windesign.EchonetScanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = EchonetScanner_dev_multi;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

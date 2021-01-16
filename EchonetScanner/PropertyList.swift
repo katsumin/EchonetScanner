@@ -10,7 +10,9 @@ import SwiftUI
 import ELSwift
 
 struct PropertyList: View {
+    @State private var searchingEpc = ""
     @State private var isRaw = false
+    @State private var scanning = false
     var node: EchonetNode
     
     private func extractProperties(_ node:EchonetNode) -> [EchonetNode.Property] {
@@ -23,13 +25,9 @@ struct PropertyList: View {
     }
     
     private func regetProperty(_ node:EchonetNode, _ epc:UInt8, _ deoj:[UInt8]) {
-        if let p = self.node.properties[Int(epc)] {
-//            print(p)
-            // 取得済みのプロパティはスキップ
-            return
-        }
-//        print(epc)
         do {
+            scanning = true
+            searchingEpc = String(format:"0x%02x", epc)
             try ELSwift.sendOPC1( self.node.ipAddress, [0x0e, 0xf0, 0x01], deoj, 0x62, epc, [0x00] )
         } catch let error {
             print( error )
@@ -40,6 +38,7 @@ struct PropertyList: View {
         NavigationView {
             VStack {
                 HStack {
+                    Text(searchingEpc)
                     Spacer()
                     Image(systemName: "doc.plaintext")
                     Text("Raw Data")
@@ -58,7 +57,7 @@ struct PropertyList: View {
                             NavigationLink(destination: ContentView(property: property)) {
                                 PropertyRow(property: property, isRaw: self.isRaw)
                             }
-                            .navigationBarHidden(true)
+//                            .navigationBarHidden(true)
                         }
                     }
                 }
@@ -66,33 +65,46 @@ struct PropertyList: View {
                 .navigationBarItems(trailing:
                     HStack {
                         Spacer()
-                        Button(action: {
-                            // 未取得のプロパティを取り直す
-                            if let propMapGet = self.node.properties[0x9f] {
-                                var array = propMapGet.values
-                                do {
-                                    if( array.count >= 16 ) {
-                                        // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
-                                        array = try ELSwift.parseMapForm2( ELSwift.bytesToString( propMapGet.values ) )
-                                    }
-                                    let num = array[0]
-                                    for i:UInt8 in (0..<num ) {
-                                        let epc = array[Int(i+1)]
-                                        if epc != 0x9f {
-                                            // このとき9fをまた取りに行くと無限ループなのでやめる
-                                            self.regetProperty(self.node, epc, propMapGet.eoj)
+                        ZStack {
+                            LoadingIndicatorView(isLoading: scanning)
+                            Button(action: {
+                                // 未取得のプロパティを取り直す
+                                if let propMapGet = self.node.properties[0x9f] {
+                                    var array = propMapGet.values
+                                    do {
+                                        if( array.count >= 16 ) {
+                                            // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
+                                            array = try ELSwift.parseMapForm2( ELSwift.bytesToString( propMapGet.values ) )
                                         }
+                                        let num = array[0]
+                                        scanning = true
+                                        DispatchQueue.global(qos: .background).async {
+                                            for i:UInt8 in (0..<num ) {
+                                                let epc = array[Int(i+1)]
+                                                if epc != 0x9f && self.node.properties[Int(epc)] == nil {
+                                                    // このとき9fをまた取りに行くと無限ループなのでやめる
+                                                    self.regetProperty(self.node, epc, propMapGet.eoj)
+    //                                                print(String(format:"epc: %02x", epc))
+                                                    Thread.sleep(forTimeInterval: 0.05)
+                                                }
+                                            }
+                                            searchingEpc = ""
+                                            scanning = false
+                                        }
+                                    } catch let error {
+                                        print(error)
                                     }
-                                } catch let error {
-                                    print(error)
+                                } else {
+                                    self.regetProperty(self.node, 0x9f, self.node.eoj)
+                                    searchingEpc = ""
+                                    scanning = false
                                 }
-                            } else {
-                                self.regetProperty(self.node, 0x9f, self.node.eoj)
+                            }){
+                                Image(systemName: "arrow.clockwise")
                             }
-                        }){
-                            Image(systemName: "arrow.clockwise")
+                            .padding(.trailing)
+                            .disabled(scanning)
                         }
-                        .padding(.trailing)
                     }
                 )
             }
