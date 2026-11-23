@@ -42,8 +42,13 @@ struct NodeRow: View {
         if iconName.starts(with: "Other.") {
             image = Image(String(iconName[iconName.index(iconName.startIndex, offsetBy: 6)..<iconName.endIndex]))
         } else {
-            image = Image(systemName: iconName)
+            if let img = UIImage(systemName: iconName) {
+                image = Image(systemName: iconName)
+            } else {
+                image = Image(systemName: "d.circle")
+            }
         }
+        
         return image
     }
 }

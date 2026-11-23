@@ -16,8 +16,8 @@
         "0x000e": { "name": "音センサ", },
         "0x000f": { "name": "投函センサ", },
         "0x0010": { "name": "重荷センサ", },
-        "0x0011": { "name": "温度センサ", },
-        "0x0012": { "name": "湿度センサ", },
+        "0x0011": { "name": "温度センサ", "icon_name": "thermometer" },
+        "0x0012": { "name": "湿度センサ", "icon_name": "barometer" },
         "0x0013": { "name": "雨センサ", },
         "0x0014": { "name": "水位センサ", },
         "0x0015": { "name": "風呂水位センサ", },
@@ -26,9 +26,9 @@
         "0x0018": { "name": "水あふれセンサ", },
         "0x0019": { "name": "火災センサ", },
         "0x001a": { "name": "タバコ煙センサ", },
-        "0x001b": { "name": "CO2センサ", },
-        "0x001c": { "name": "ガスセンサ", },
-        "0x001d": { "name": "VOCセンサ", },
+        "0x001b": { "name": "CO2センサ", "icon_name": "barometer" },
+        "0x001c": { "name": "ガスセンサ", "icon_name": "barometer" },
+        "0x001d": { "name": "VOCセンサ", "icon_name": "barometer" },
         "0x001e": { "name": "差圧センサ", },
         "0x001f": { "name": "風速センサ", },
         "0x0020": { "name": "臭いセンサ", },
@@ -44,7 +44,7 @@
         "0x002a": { "name": "活動量センサ", },
         "0x002b": { "name": "人体位置センサ", },
         "0x002c": { "name": "雪センサ", },
-        "0x002d": { "name": "気圧センサ", },
+        "0x002d": { "name": "気圧センサ", "icon_name": "barometer" },
         "0x0130": { "name": "家庭用エアコン", "icon_name": "wind" },
         "0x0131": { "name": "冷風機", },
         "0x0132": { "name": "扇風機", },
@@ -177,7 +177,7 @@
         "0x05fc": { "name": "セキュア通信用共有鍵設定ノード", },
         "0x05fd": { "name": "スイッチ", },
         "0x05fe": { "name": "携帯端末", },
-        "0x05ff": { "name": "コントローラ", },
+        "0x05ff": { "name": "コントローラ", "icon_name": "gamecontroller" },
         "0x0601": { "name": "ディスプレー", },
         "0x0602": { "name": "テレビ", },
         "0x0603": { "name": "オーディオ", },
@@ -190,6 +190,44 @@
                 "name": "温度計測値",
                 "type": "value",
                 "class_name" : "PropertyTemperatureSigned2byte"
+            }
+        },
+        "0x001b": {
+            "0xe0": {
+                "name": "CO2濃度計測値",
+                "type": "value",
+                "class_name" : "PropertyInstantPpmUnsignedDigit5"
+            }
+        },
+        "0x001d": {
+            "0xb0": {
+                "name": "検知閾値レベル設定",
+                "type": "select",
+                "select_items": {
+                    "0x31": "レベル１",
+                    "0x32": "レベル２",
+                    "0x33": "レベル３",
+                    "0x34": "レベル４",
+                    "0x35": "レベル５",
+                    "0x36": "レベル６",
+                    "0x37": "レベル７",
+                    "0x38": "レベル８",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xb1": {
+                "name": "VOC検知状態",
+                "type": "select",
+                "select_items": {
+                    "0x41": "VOC検知有",
+                    "0x42": "VOC検知無",
+                },
+                "class_name": "PropertySelectable1Byte"
+            },
+            "0xe0": {
+                "name": "VOC濃度計測値",
+                "type": "value",
+                "class_name" : "PropertyInstantPpmUnsignedDigit5"
             }
         },
         "0x0012": {

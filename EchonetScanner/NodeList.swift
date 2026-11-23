@@ -10,11 +10,14 @@ import SwiftUI
 import ELSwift
 
 struct NodeList: View {
+    private static var objectDetails: Dictionary<String, [UInt8]>!  = [String: [UInt8]]()
     @EnvironmentObject var userData: UserData
     @State private var delay:Timer? = nil
     @State private var withNodeProfile = false
-    @State private var searchingIp = ""
+//    @State private var searchingIp = ""
     @State private var scanning = false
+//    @State private var stopScan = false
+    @State private var percent = 0.0
 
     private func hexString(_ data: UInt8) -> String {
         return String.init(format: "%02x", data)
@@ -68,13 +71,13 @@ struct NodeList: View {
         return array
     }
     private func reflectSettable() {
-        print("reflect settables")
+//        print("reflect settables")
         for nodes in self.userData.echonetNodes.values {
             for node in nodes.values {
                 if let setProps = node.properties[0x9e] { // Setプロパティマップ
                     let array = getPropertyMap(prop: setProps)
                     for prop in node.properties.values {
-                        if array.contains(UInt8(prop.epc)) && prop.selectItems != nil && !prop.selectItems!.isEmpty {
+                        if array.contains(UInt8(prop.epc)) && prop.getInputType() != EchonetNode.Property.InputType.DEFAULT {
                             prop.settable = true
                         }
                     }
@@ -82,30 +85,46 @@ struct NodeList: View {
             }
         }
     }
+
     private func search() -> Void {
         // すべてノードに対して，すべてのEOJをGetする
         DispatchQueue.global(qos: .background).async {
             scanning = true
             do {
-//            try ELSwift.sendOPC1( ELSwift.EL_Multi, [0x0e,0xf0, 0x01], [0x0e, 0xf0, 0x01], 0x62, 0xD6, [0x00] )
+                var count = 0
+                let size = NetworkInfo.getIpAddresses().count
                 for addr in NetworkInfo.getIpAddresses() {
+                    if !scanning {
+//                        print("stoped")
+                        break
+                    }
                     let key = NetworkInfo.toInt(addr)
                     let nodesAtAddr = self.userData.echonetNodes[key]
                     if nodesAtAddr == nil || (nodesAtAddr!.count < 2 && nodesAtAddr!["0x0ef0"] != nil) {
                         try ELSwift.sendOPC1( addr, [0x0e,0xf0, 0x01], [0x0e, 0xf0, 0x01], 0x62, 0xD6, [0x00] )
-                        print(addr)
-                        searchingIp = addr
-                        Thread.sleep(forTimeInterval: 0.05)
+//                        print(addr)
+//                        DispatchQueue.main.async {
+//                            searchingIp = addr
+//                        }
+                        Thread.sleep(forTimeInterval: 0.1)
                     } else {
-                        print("skip: \(addr)")
+//                        print("skip: \(addr)")
                     }
+                    count += 1
+                    DispatchQueue.main.async {
+                        percent = Double(count) / Double(size)
+                    }
+//                    print("percent: \(percent)")
                 }
-                searchingIp = ""
             } catch let error {
                 print("Error: ELSwift.search.")
                 print(error)
             }
+//            searchingIp = ""
             scanning = false
+            DispatchQueue.main.async {
+                percent = 0.0
+            }
         }
     }
 
@@ -114,7 +133,7 @@ struct NodeList: View {
             VStack {
                 Spacer()
                 HStack {
-                    Text(searchingIp)
+//                    Text(searchingIp)
                     Spacer()
                     Text("NodeProfile")
                     Toggle(isOn: $withNodeProfile){
@@ -128,29 +147,45 @@ struct NodeList: View {
                         NavigationLink(destination: PropertyList(node: node)) {
                             NodeRow(deviceType: node.deviceType, ipAddress: node.ipAddress)
                         }
-//                        .navigationBarHidden(true)
                     }
                 }
                 .navigationBarTitle(Text("Echonet Lite 機器一覧"), displayMode: .inline)
                 .navigationBarItems(trailing:
                     HStack {
                         Spacer()
-                        ZStack{
-                            LoadingIndicatorView(isLoading: scanning)
+                        ZStack {
+//                            LoadingIndicatorView(width:20, height:20, isLoading: scanning)
+//                            if scanning {
+                            Circle()
+                                .stroke(Color(.systemGray5),lineWidth: 2)
+                                .frame(width: 30, height: 30)
+                            Circle()
+                                .trim(from:0, to:CGFloat(percent))
+                                .rotation(Angle.degrees(-90))
+                                .stroke(Color.blue,lineWidth: 2)
+                                .frame(width: 30, height: 30)
+//                            }
                             Button(action: {
-                                self.search()
-                            }){
-                                Image(systemName: "arrow.clockwise")
-                            }
-                            .padding(.trailing)
-                            .disabled(scanning)
+//                                print("button")
+                                if scanning {
+                                    scanning = false
+//                                    print("stop")
+                                } else {
+                                    percent = 0.0
+                                    scanning = true
+                                    self.search()
+                                }
+                            }, label: {
+                                Image(systemName: scanning ?"stop.fill" :"arrow.clockwise")
+                                    .frame(width: 10, height: 10)
+                            })
                         }
                     }
                 )
             }
         }.onAppear(){
+            let objectList:[String] = ["05ff01"]
             do {
-                let objectList:[String] = ["05ff01"]
                 try ELSwift.initialize( objectList, { rinfo, els, err in
                     if let error = err {
                         print (error)
@@ -163,10 +198,27 @@ struct NodeList: View {
                         let detail = elsv.DETAIL
                         let addr = rinfo.address
                         let key = NetworkInfo.toInt(addr)
-                        print("key: \(key), ip:\(addr), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), datail:\(self.hexString(detail))")
-                        if esv == ELSwift.GET_RES || esv == ELSwift.SET_RES || esv == ELSwift.INF {
+//                        print("key: \(key), ip:\(addr), seoj:\(self.hexString(seoj)), esv:\(self.hexString(esv)), datail:\(self.hexString(detail))")
+                        if esv == ELSwift.GET {
+                            if elsv.DEOJ == [0x05, 0xff, 0x01] {
+                                for (key, _) in elsv.DETAILs {
+                                    let epc = key
+//                                    print("epc: \(epc)")
+                                    do {
+                                        if( NodeList.objectDetails[epc] != nil ) { // 持ってるEPCのとき
+                                            try ELSwift.sendOPC1( rinfo.address, elsv.DEOJ, seoj, 0x72, ELSwift.toHexArray(epc)[0], NodeList.objectDetails[epc]! )
+                                        } else { // 持っていないEPCのとき, SNA
+                                            try ELSwift.sendOPC1( rinfo.address, elsv.DEOJ, seoj, 0x52, ELSwift.toHexArray(epc)[0], [0x00] )
+                                        }
+                                    } catch let error {
+                                        print(error)
+                                    }
+                                }
+                            }
+//                            print("DEOJ: \(elsv.DEOJ), GET: \(elsv.DETAILs), OPC: \(elsv.OPC)")
+                        } else if esv == ELSwift.GET_RES || esv == ELSwift.SET_RES || esv == ELSwift.INF {
                             let opc = Int(elsv.OPC)
-                            print(" -> opc:\(opc)")
+//                            print(" -> opc:\(opc)")
                             for prop in EchonetNode.Property.parse(detail, opc, addr, seoj) {
                                 var nodesAtAddr = self.userData.echonetNodes[key]
                                 if nodesAtAddr == nil {
@@ -180,6 +232,22 @@ struct NodeList: View {
                                 }
                                 node!.appendProperty(prop)
                                 self.userData.echonetNodes[key]!.updateValue(node!, forKey: deviceType)
+                                if prop.eoj[0...1] == [0x0e, 0xf0] && prop.epc == 0xd6 {
+                                    var instNum = prop.values[0]
+                                    while( 0 < instNum ) {
+                                        let begin:Int = ( Int(instNum) - 1) * 3 + 1
+                                        let end:Int   = ( Int(instNum) - 1) * 3 + 4
+                                        let arType = Array( prop.values[ begin..<end ] )
+                                        let type = "0x" + EchonetNode.Property.hexString(Array(arType[0..<2]))
+                                        var node = nodesAtAddr![type]
+                                        if node == nil {
+                                            node = EchonetNode.create(addr, arType, [])
+                                            self.userData.echonetNodes[key]!.updateValue(node!, forKey: type)
+                                        }
+                                        instNum -= 1
+                                    }
+                                }
+//                                print(self.userData.echonetNodes[key])
                             }
                         }
                     }
@@ -200,6 +268,27 @@ struct NodeList: View {
             }catch let error{
                 print( error )
             }
+            ELSwift.Node_details["80"] = [0x30]
+            ELSwift.Node_details["82"] = [0x00, 0x00, 0x48, 0x00] // EL version, 1.1
+            ELSwift.Node_details["83"] = [0xfe, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00] // identifier
+            ELSwift.Node_details["8a"] = [0xff, 0xff, 0xff] // maker code
+            ELSwift.Node_details["9d"] = [0x02, 0x80, 0xd5]       // inf map, 1 Byte目は個数
+            ELSwift.Node_details["9e"] = [0x00]                 // set map, 1 Byte目は個数
+            ELSwift.Node_details["9f"] = [0x09, 0x80, 0x82, 0x83, 0x8a, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7] // get map, 1 Byte目は個数
+            ELSwift.Node_details["d3"] = [0x00, 0x00, 0x01]  // 自ノードで保持するインスタンスリストの総数（ノードプロファイル含まない）, user項目
+            ELSwift.Node_details["d4"] = [0x00, 0x02]        // 自ノードクラス数, user項目, D4はノードプロファイルが入る
+            ELSwift.Node_details["d5"] = [0x01, 0x05, 0xff, 0x01]    // インスタンスリスト通知, user項目
+            ELSwift.Node_details["d6"] = ELSwift.Node_details["d5"]    // 自ノードインスタンスリストS, user項目
+            ELSwift.Node_details["d7"] = [0x01, 0x05, 0xff]    // 自ノードクラスリストS, user項目
+            NodeList.objectDetails["80"] = [0x30]
+            NodeList.objectDetails["81"] = [0xff]
+            NodeList.objectDetails["82"] = [0x00, 0x00, 0x48, 0x00] // EL version, 1.1
+            NodeList.objectDetails["83"] = [0xfe, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00] // identifier
+            NodeList.objectDetails["88"] = [0x42]
+            NodeList.objectDetails["8a"] = [0xff, 0xff, 0xff] // maker code
+            NodeList.objectDetails["9d"] = [0x02, 0x80, 0x88]
+            NodeList.objectDetails["9e"] = [0x00]
+            NodeList.objectDetails["9f"] = [0x09, 0x80, 0x81, 0x82, 0x83, 0x88, 0x8a, 0x9d, 0x9e, 0x9f]
             ELSwift.search()
         }
     }

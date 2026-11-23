@@ -180,6 +180,27 @@ class PropertyInstantCurrentUnsignedDigit5: PropertySub {
     }
 }
 
+class PropertyInstantPpmUnsignedDigit5: PropertySub {
+    override func getValue(_ raw: Bool) -> String {
+        if raw {
+            return super.getValue(raw)
+        }
+        if values.count < 2 {
+            return super.getValue(raw)
+        }
+        let v = UInt16(values[0]) << 8 | UInt16(values[1])
+        if v <= 65533 {
+            return String.init(format:"%5dppm", v)
+        } else if v == 65534 {
+            return "under flow"
+        } else if v == 65535 {
+            return "over flow"
+        } else {
+            return "unknown"
+        }
+    }
+}
+
 class PropertyInstantPowerSignedDigit9: PropertySub {
     override func getValue(_ raw: Bool) -> String {
         if raw {

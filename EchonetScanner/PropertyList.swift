@@ -10,9 +10,10 @@ import SwiftUI
 import ELSwift
 
 struct PropertyList: View {
-    @State private var searchingEpc = ""
+//    @State private var searchingEpc = ""
     @State private var isRaw = false
     @State private var scanning = false
+    @State private var percent = 0.0
     var node: EchonetNode
     
     private func extractProperties(_ node:EchonetNode) -> [EchonetNode.Property] {
@@ -27,10 +28,57 @@ struct PropertyList: View {
     private func regetProperty(_ node:EchonetNode, _ epc:UInt8, _ deoj:[UInt8]) {
         do {
             scanning = true
-            searchingEpc = String(format:"0x%02x", epc)
+//            searchingEpc = String(format:"0x%02x", epc)
             try ELSwift.sendOPC1( self.node.ipAddress, [0x0e, 0xf0, 0x01], deoj, 0x62, epc, [0x00] )
         } catch let error {
             print( error )
+        }
+    }
+
+    private func search() -> Void {
+        // 未取得のプロパティを取り直す
+        if let propMapGet = self.node.properties[0x9f] {
+            scanning = true
+            percent = 0.0
+            DispatchQueue.global(qos: .background).async {
+                var array = propMapGet.values
+                do {
+                    if( array.count >= 16 ) {
+                        // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
+                        array = try ELSwift.parseMapForm2( ELSwift.bytesToString( propMapGet.values ) )
+                    }
+                    let num = array[0]
+                    var count = 0
+                    for i:UInt8 in (0..<num ) {
+                        if !scanning {
+                            break
+                        }
+                        let epc = array[Int(i+1)]
+                        if epc != 0x9f && self.node.properties[Int(epc)] == nil {
+                            // このとき9fをまた取りに行くと無限ループなのでやめる
+                            self.regetProperty(self.node, epc, propMapGet.eoj)
+//                                                print(String(format:"epc: %02x", epc))
+                            Thread.sleep(forTimeInterval: 0.1)
+                        }
+                        count += 1
+                        DispatchQueue.main.async {
+                            percent = Double(count) / Double(num)
+                        }
+                    }
+                } catch let error {
+                    print(error)
+                }
+//                searchingEpc = ""
+                scanning = false
+                DispatchQueue.main.async {
+                    percent = 0.0
+                }
+            }
+        } else {
+            self.regetProperty(self.node, 0x9f, self.node.eoj)
+//            searchingEpc = ""
+            scanning = false
+            percent = 0.0
         }
     }
 
@@ -38,7 +86,7 @@ struct PropertyList: View {
         NavigationView {
             VStack {
                 HStack {
-                    Text(searchingEpc)
+//                    Text(searchingEpc)
                     Spacer()
                     Image(systemName: "doc.plaintext")
                     Text("Raw Data")
@@ -66,45 +114,34 @@ struct PropertyList: View {
                     HStack {
                         Spacer()
                         ZStack {
-                            LoadingIndicatorView(isLoading: scanning)
+//                            LoadingIndicatorView(width:20, height:20, isLoading: scanning)
+//                                .padding([.bottom, .trailing])
+//                                .frame(width: 6.0, height: 6.0)
+                            Circle()
+                                .stroke(Color(.systemGray5),lineWidth: 2)
+                                .frame(width: 30, height: 30)
+                            Circle()
+                                .trim(from:0, to:CGFloat(percent))
+                                .rotation(Angle.degrees(-90))
+                                .stroke(Color.blue,lineWidth: 2)
+                                .frame(width: 30, height: 30)
                             Button(action: {
-                                // 未取得のプロパティを取り直す
-                                if let propMapGet = self.node.properties[0x9f] {
-                                    var array = propMapGet.values
-                                    do {
-                                        if( array.count >= 16 ) {
-                                            // 16バイト以上なので記述形式2，EPCのarrayを作り直したら，あと同じ
-                                            array = try ELSwift.parseMapForm2( ELSwift.bytesToString( propMapGet.values ) )
-                                        }
-                                        let num = array[0]
-                                        scanning = true
-                                        DispatchQueue.global(qos: .background).async {
-                                            for i:UInt8 in (0..<num ) {
-                                                let epc = array[Int(i+1)]
-                                                if epc != 0x9f && self.node.properties[Int(epc)] == nil {
-                                                    // このとき9fをまた取りに行くと無限ループなのでやめる
-                                                    self.regetProperty(self.node, epc, propMapGet.eoj)
-    //                                                print(String(format:"epc: %02x", epc))
-                                                    Thread.sleep(forTimeInterval: 0.05)
-                                                }
-                                            }
-                                            searchingEpc = ""
-                                            scanning = false
-                                        }
-                                    } catch let error {
-                                        print(error)
-                                    }
-                                } else {
-                                    self.regetProperty(self.node, 0x9f, self.node.eoj)
-                                    searchingEpc = ""
+                                if scanning {
                                     scanning = false
+//                                    print("stop")
+                                } else {
+                                    percent = 0.0
+                                    scanning = true
+                                    self.search()
                                 }
                             }){
-                                Image(systemName: "arrow.clockwise")
+                                Image(systemName: scanning ?"stop.fill" :"arrow.clockwise")
+                                    .frame(width: 10, height: 10)
                             }
-                            .padding(.trailing)
-                            .disabled(scanning)
+//                            .padding(.trailing)
+    //                        .disabled(scanning)
                         }
+                        .padding(.trailing)
                     }
                 )
             }
